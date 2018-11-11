@@ -16,7 +16,7 @@ First we get the current git of nutyx localy (step1) as normal user. As we want 
 #### 1. Clone it in your home directory
 
     $ cd
-    $ git clone https://github.com/fanch/current.git
+    $ git clone https://github.com/fanch/current-systemd.git current
 	
 #### 2. Become root until the end, define and create the directory used by the scripts:
 
