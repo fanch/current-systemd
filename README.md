@@ -28,6 +28,7 @@ First we get the current git of nutyx localy (step1) as normal user. As we want 
     VERSION=current" > /etc/install-nutyx.conf
     # mkdir -p /etc/install-nutyx.conf.d
     # cat > /etc/install-nutyx.conf.d/cards.conf << "EOF"
+    dir /current/base
     dir /current/base|http://127.0.0.1
     base /current/base
     logdir /var/log/pkgbuild
