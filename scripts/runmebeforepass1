@@ -1,0 +1,136 @@
+version="current"
+echo "Ce script vérifie tout ce qu'il peut pour que vous puissiez commencez"
+echo ""
+echo "Pressez Entrer pour continuer ou ctrl+c pour interrompre"
+echo ""
+read a
+# Checking the current directory
+if [ "`pwd`" != "/home/lfs/$version" ]; then
+	echo "Le script doit être lancé depuis le dossier /home/lfs/$version"
+	exit 1
+fi
+# Checking the variables
+if [ ! -f ~/.bash_profile ]; then
+	echo ".bash_profile n'existe pas"
+	exit 1
+fi
+echo ".bash_profile present: OK"
+if [ -z "${LFS}" ]; then
+	echo "LFS n'existe pas"
+	exit 1
+fi
+echo "LFS: $LFS OK"
+if [ -z "${LFS_TARGET}" ]; then
+   echo "LFS_TARGET n'existe pas"
+   exit 1
+fi
+echo "LFS_TARGET: $LFS_TARGET OK"
+
+# Checking the user
+
+if [ "`whoami`" != "lfs" ]; then 
+	echo "Vous n'êtes pas l'utilisateur lfs"
+	exit 1
+else
+	echo "utilisateur lfs: OK"
+fi
+# Checkings Directories
+
+if [ ! -d $LFS ]; then
+	echo "$LFS n'existe pas"
+	exit 1
+else
+	echo "Folder $LFS: OK"
+fi
+if [ ! -O $LFS ]; then
+	echo "$LFS n'appartient pas à lfs"
+	exit 1
+fi
+if [ ! -d $LFS/sources ]; then
+   echo "$LFS/sources n'existe pas"
+   exit 1
+else
+	echo "Folder $LFS/sources: OK"
+fi
+if [ ! -O $LFS/sources ]; then
+	echo "$LFS/sources n'appartient pas à lfs"
+	exit 1
+fi
+
+if [ ! -L /sources ];then
+        echo "Faites en root:"
+        echo "ln -sv $LFS/sources /sources"
+        exit 1
+fi
+if [ ! -d $LFS/tools ]; then
+	echo "$LFS/tools n'existe pas"
+	exit 1
+else
+	echo "Folder $LFS/tools: OK"
+fi
+if [ ! -O $LFS/tools ];then
+	echo "$LFS/tools n'appartient pas à lfs"
+	exit 1
+fi
+if [ ! -d /home/lfs/logs ]; then
+   echo "Dossier /home/lfs/logs n'existe pas"
+   mkdir -p $HOME/logs
+fi
+echo "Folder /home/lfs/logs: OK"
+
+# Checking Links
+
+if [ ! -L /tools ]; then
+	echo "Lien /tools n'existe pas"
+	exit 1
+else
+	echo "Link /tools: OK"
+fi
+
+if [ ! -L /home/lfs/bin ]; then
+	echo "Lien /home/lfs/bin n'existe pas"
+	ln -sv $HOME/$version/scripts $HOME/bin
+fi
+echo "link /home/lfs/bin: OK" 
+
+if [ ! -L /home/lfs/config ];then
+   echo "Lien /home/lfs/config n'existe pas"
+   ln -sv $HOME/$version/scripts $HOME/config
+fi
+echo "link /home/lfs/config: OK"
+
+for i in  wget-list md5sums
+do wget http://www.linuxfromscratch.org/lfs/view/development/$i \
+   -O $LFS/sources/$i
+done
+for i in `cat $LFS/sources/wget-list`
+do
+   if [ ! -f $LFS/sources/`basename $i` ]; then
+      wget --no-check-certificate $i -P $LFS/sources
+   fi
+done
+
+for i in `cat wget_nutyx_list`
+do 
+	if [ ! -f $LFS/sources/`basename $i` ]; then 
+		wget --no-check-certificate $i -P $LFS/sources
+	fi
+done
+if [ -f $LFS/sources/md5sums ]; then
+	pushd  $LFS/sources
+	md5sum -c md5sums || exit 1
+	popd
+else
+	echo "$LFS/sources/md5sums pas trouvé, impossible de vérifier les sources"
+	exit 1
+fi
+echo ""
+echo "====> Successfull configured"
+echo ""
+echo "Si vous lisez ce message, faites:"
+echo ""
+echo "cd $HOME/$version/chroot"
+echo "pass"
+echo ""
+echo "Admirez le travail ..."
+echo "" 

@@ -1,0 +1,38 @@
+# Depends on: libtirpc
+
+description="portmap replacement which supports RPC over various protocols"
+url="http://rpcbind.sourceforge.net/"
+contributors="alienus at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_GROUPS=(man)
+
+name=rpcbind
+version=1.2.5
+release=1
+
+source=(http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
+		rpcbind-$version-vulnerability_fixes-1.patch)
+
+build() {
+# build package
+source /etc/blfs-systemd-units
+wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+    cd rpcbind-$version
+    
+    sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
+
+    patch -Np1 -i ../rpcbind-$version-vulnerability_fixes-1.patch
+    ./configure --prefix=/usr       \
+                --bindir=/sbin      \
+                --with-rpcuser=root \
+		--enable-warmstarts \
+		--without-systemdsystemunitdir
+    make
+    make DESTDIR=$PKG install
+
+cd $SRC
+tar xf $scripts-$scriptsversion.tar.bz2
+cd $SRC/$scripts-$scriptsversion
+    make DESTDIR=$PKG install-rpcbind
+}

@@ -1,0 +1,20 @@
+# Depends on: perl
+
+description="Perl/CPAN Module YAML : YAML Aint Markup Language"
+url="http://search.cpan.org/dist/YAML/"
+packager="tnut <tnut@nutyx.org>"
+
+name=perl-yaml
+version=1.26
+release=1
+
+source=(http://www.cpan.org/authors/id/T/TI/TINITA/YAML-$version.tar.gz)
+run=(perl)
+
+build() {
+cd YAML-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
+}

@@ -1,0 +1,40 @@
+# Description: The principal firewall tool for Linux.
+# URL: http://www.iptables.org/
+# Packager: tnut <tnut@nutyx.org>
+# Contributors: Pierre B
+
+name=iptables
+version=1.8.0
+release=1
+source=(http://www.netfilter.org/projects/iptables/files/$name-$version.tar.bz2)
+
+build() {
+# build package
+source /etc/blfs-systemd-units
+wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+ 
+cd $name-$version
+sed -i -e '/libebt_/s/^/#/' \
+       -e '/libarpt_/s/^/#/' extensions/GNUmakefile.in
+
+./configure --prefix=/usr      \
+            --sbindir=/sbin    \
+            --disable-nftables \
+            --enable-libipq    \
+            --with-xtlibdir=/lib/xtables \
+            --enable-devel
+make
+make DESTDIR=$PKG install
+
+ln -sfv ../../sbin/xtables-legacy-multi $PKG/usr/bin/iptables-xml
+for file in ip4tc ip6tc ipq iptc xtables
+do
+   mv -v $PKG/usr/lib/lib${file}.so.* $PKG/lib
+   ln -sfv ../../lib/$(readlink $PKG/usr/lib/lib${file}.so) $PKG/usr/lib/lib${file}.so
+done
+
+# service
+tar xf $SRC/$scripts-$scriptsversion.tar.bz2
+cd $scripts-$scriptsversion
+make DESTDIR=$PKG install-$name
+}

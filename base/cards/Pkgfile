@@ -1,0 +1,51 @@
+# Description: A set of utilities to manage software packages on NuTyX distribution.
+# URL: https://github.com/NuTyX/cards
+# Maintainer: tnut at nutyx dot org
+# Packager: tnut at nutyx dot org
+
+
+alias=(card)
+PKGMK_IGNORE_RUNTIMEDEPS="no"
+PKGMK_GROUPS=(devel doc man)
+
+name=cards
+version=2.2.2
+release=2
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
+
+build () {
+cd $name-$version
+make all
+make DESTDIR=$PKG install
+mkdir -p $PKG/{etc,usr}/ports
+
+#mkdir -p $PKG/var/lib/pkg/DB/eudev
+#cat > $PKG/var/lib/pkg/DB/eudev/files << "EOF"
+#!/bin/bash
+#echo "etc/
+#etc/udev/
+#etc/udev/hwdb.bin" > /var/lib/pkg/DB/eudev/files
+#echo "Neudev
+#DEudev
+#V3.2
+#r1
+#B1466968899
+#ax86_64
+#cbase" > /var/lib/pkg/DB/eudev/META
+#EOF
+#chmod 755 $PKG//var/lib/pkg/DB/eudev
+
+#mkdir -pv $PKG/etc/sysconfig/modules.d
+#ln -svf $PKG/etc/sysconfig/modules.d $PKG/etc/modules-load.d
+}
+devel() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
+usr/bin \
+usr/ports \
+var \
+etc/ports \
+etc/pkgmk.conf.example
+rm -rf var usr/bin usr/ports etc/pkgmk.conf.example etc/ports 
+}

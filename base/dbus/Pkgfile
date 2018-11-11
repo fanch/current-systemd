@@ -1,0 +1,35 @@
+# Depends on: systemd expat xorg-libx11 xorg-libsm xorg-libice
+description="Bus message system"
+url="http://dbus.freedesktop.org/releases/dbus"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
+
+name=dbus
+version=1.12.10
+release=1
+source=(http://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.gz)
+
+build () {
+cd $name-$version
+./configure --prefix=/usr                        \
+            --sysconfdir=/etc                    \
+            --localstatedir=/var                 \
+            --enable-user-session                \
+            --disable-doxygen-docs               \
+            --disable-xml-docs                   \
+            --disable-static                     \
+            --docdir=/usr/share/doc/dbus-$version \
+            --with-console-auth-dir=/run/console \
+            --with-system-pid-file=/run/dbus/pid \
+            --with-system-socket=/run/dbus/system_bus_socket \
+            --with-systemdsystemunitdir=/lib/systemd/system \
+            --enable-systemd 
+
+make
+make DESTDIR=$PKG install
+mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
+ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) $PKG/usr/lib/libdbus-1.so
+ln -sv $PKG/etc/machine-id $PKG/var/lib/dbus
+chown -v root:messagebus $PKG/usr/libexec/dbus-daemon-launch-helper
+chmod -v      4750       $PKG/usr/libexec/dbus-daemon-launch-helper
+}

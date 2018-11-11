@@ -1,0 +1,20 @@
+# Depends on:  ninja 
+
+description="Meson is an open source build system meant to be both extremely fast, as user friendly as possible"
+url="http://mesonbuild.com/"
+contributors="Jayce, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=meson
+version=0.48.1
+release=1
+source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz
+		MESON)
+
+build() {
+  cd $name-$version
+  export LC_CTYPE=en_US.UTF-8
+  python3 setup.py build
+  python3 setup.py install --root=$PKG --optimize=1 --skip-build
+  install -D $SRC/MESON -t $PKG/usr/bin
+}

@@ -1,0 +1,18 @@
+# Description: The Less package contains a text file viewer.
+# URL: http://www.greenwoodsoftware.com/less/
+# Maintainer: Mark Nudelman
+# Packager: tnut <tnut@nutyx.org>
+
+name=less
+version=530
+release=1
+source=(http://www.greenwoodsoftware.com/less/less-$version.tar.gz)
+
+build() {
+cd less-$version
+
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}

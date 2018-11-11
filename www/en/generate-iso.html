@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+     <title>NuTyX - Produce a customised ISO</title>
+ </head>
+ <body>
+   <table>
+    <tr>
+     <td width="30%">
+         <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+     </td>
+     <td>
+      <nav>
+       <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=19.0">Forums</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+       </ul>
+      </nav>
+     </td>
+    </tr>
+   </table>
+   <hr>
+    <h1> Produce a customised ISO</h1>
+     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>All the commands should be enter in the root account</div>
+     <ol>
+      <li>
+       <h2>Installation of a NuTyX</h2>
+       <ol>
+        <li>
+         <h3>Get all the tools</h3>
+          <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git</kbd></pre>
+        </li>
+        <li>
+         <h3>Make shure you have cdrkit and syslinux installed, in worth case:</h3>
+          <pre class="command"><kbd>get cdrkit
+get syslinux</kbd></pre>
+        </li>
+        <li>
+         <h3>A variable will be used during the all process</h3>
+          <p>The LFS variable MUST be defined</p>
+          <pre class="command"><kbd>export LFS=/ISO-MINI</kbd></pre>
+          <p>The chroot will be in the "/ISO-MINI" directory. Up to you to choose another place.</p>
+        </li>
+        <li>
+         <h3>Install the houaphan base system</h3>
+          <pre class="command"><kbd>bash houaphan/scripts/install-houaphan</kbd></pre>
+        </li>
+        <li>
+         <h3>Copy the files for the iso</h3>
+          <pre class="command"><kbd>cp -av houaphan/iso $LFS/ISO</kbd></pre>
+        </li>
+        </ol>
+       </li>
+       <li>
+        <h2>Generate the ISO</h2>
+         <ol>
+          <li>
+           <h3>Put the kernel and the initrd in the right place</h3>
+            <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel
+cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
+          </li>
+          <li>
+           <h3>Flush the binaries archives</h3>
+            <pre class="command"><kbd>cards purge</kbd></pre>
+          </li>
+          <li>
+           <h3>Generate the squashfs files </h3>
+            <pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
+cd /
+for dir in opt bin etc lib root run sbin usr var home
+do
+  [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
+  mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
+done</kbd></pre>
+          </li>
+          <li>
+           <h3>Quit the NuTyX chroot</h3>
+            <pre class="command"><kbd>exit</kbd></pre>
+          </li>
+          <li>
+           <h3>Generate the ISO</h3>
+            <pre class="command"><kbd>bash houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+          </li>
+         </ol>
+        </li>
+        <li>
+         <h2>Conclusion</h2>
+          <p>The size shoul'nd be bigger then 300 MB if you didn't put anything else then all the packages mentionned above. You will find the iso in the $LFS directory.</p>
+          <pre class="command"><kbd>ls $LFS</kbd></pre>
+          <pre class="output">bin   dev  home  lib  NuTyX_x86_64-houaphan-20150723.iso     proc  run   srv  tmp  var
+boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20150723.md5sum  root  sbin  sys  usr</pre>
+        </li>
+       </ol>
+      <hr>
+      <p class="updated">Last updated 2015-09-15 18:03</p>
+       <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+    <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>    </footer>
+ </body>
+</html>

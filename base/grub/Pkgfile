@@ -1,0 +1,31 @@
+# Description: The GRUB package contains the GRand Unified Bootloader.
+# URL: http://www.gnu.org/software/grub/
+# Packager: tnut <tnut@nutyx.org>
+# Contributors:Pierre B
+
+PKGMK_GROUPS=(man locale)
+
+name=grub
+version=2.02
+release=1
+source=(http://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
+	grub.cfg)
+
+build() {
+	cd grub-$version
+
+	./configure --prefix=/usr \
+		--sysconfdir=/etc       \
+		--sbindir=/sbin        \
+		--disable-grub-emu-usb  \
+		--disable-efiemu \
+		--infodir=/usr/share/info \
+		--disable-werror
+	make
+	make DESTDIR=$PKG install
+        install -d $PKG/boot/grub
+	install -Dm644 ../grub.cfg \
+	$PKG/boot/grub/grub.cfg.exemple
+
+	rm -rf $PKG/usr/share/info
+}

@@ -1,0 +1,21 @@
+# Description: DOS filesystem utilities.
+# URL: https://github.com/dosfstools/dosfstools
+# Contributors: Pierre B
+# Packager: tnut <tnut@nutyx.org>
+
+name=dosfstools
+version=4.1
+release=1
+source=(https://github.com/$name/$name/releases/download/v$version/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr                      \
+              --libexecdir=/usr/lib              \
+              --sbindir=/usr/bin                 \
+              --mandir=/usr/share/man            \
+              --docdir=/usr/share/doc/dosfstools \
+              --enable-compat-symlinks
+  make
+  make DESTDIR=$PKG install
+}

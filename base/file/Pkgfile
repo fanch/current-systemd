@@ -1,0 +1,24 @@
+# Description: Utility for determining the type of a given file or files.
+# URL: ftp://ftp.fu-berlin.de/unix/tools/file/
+# Maintainer: Christos Zoulas
+# Packager: tnut <tnut@nutyx.org>
+
+name=file
+version=5.35
+release=1
+source=(ftp://ftp.astron.com/pub/file/file-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make check
+make DESTDIR=$PKG install
+}
+devel() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/include
+rm -r usr/include
+}

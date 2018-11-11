@@ -1,0 +1,27 @@
+# Description: Set of utilities and libraries for handling elf files.
+# URL: http://xiph.org/ao/
+# Packager: tnut <tnut@nutyx.org>
+
+name=elfutils
+version=0.174
+release=2
+source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2)
+
+build() {
+cd $name-$version
+sed -i -e 's/$(if $($(\*F)_no_Werror),,-Werror)//' */Makefile.in
+./configure --prefix=/usr \
+--program-prefix="eu-" --enable-deterministic-archives
+make
+make prefix=$PKG/usr install
+# already present in libelf in base
+rm $PKG/usr/include/elfutils/elf-knowledge.h \
+$PKG/usr/include/gelf.h \
+$PKG/usr/include/libelf.h \
+$PKG/usr/include/nlist.h \
+$PKG/usr/lib/pkgconfig/libelf.pc \
+$PKG/usr/lib/libelf-0.174.so \
+$PKG/usr/lib/libelf.a \
+$PKG/usr/lib/libelf.so \
+$PKG/usr/lib/libelf.so.1
+}

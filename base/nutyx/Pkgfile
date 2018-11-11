@@ -1,0 +1,17 @@
+# Description: Base system of NuTyX, contains all folders and startup scripts.
+# URL: https://github.com/nutyx
+# Maintainer: tnut at nutyx dot org
+# Packager: tnut at nutyx dot org
+
+PKGMK_GROUPS=(man)
+PKGMK_IGNORE_RUNTIMEDEPS=yes
+
+name=nutyx
+version=9.1
+release=1
+source=(http://downloads.nutyx.org/files/$name-$version.tar.xz)
+
+build () {
+cd $name-$version
+make DESTDIR=$PKG install
+}

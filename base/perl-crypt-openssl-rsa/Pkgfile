@@ -1,0 +1,22 @@
+# Description: Interface to OpenSSL RSA methods
+# URL: https://metacpan.org/pod/Crypt::OpenSSL::RSA
+# Packager: tnut <tnut@nutyx.org>
+# Contributors: Pierre B
+# Depends on: perl perl-crypt-openssl-random perl-crypt-openssl-bignum 
+run=(perl perl-crypt-openssl-random perl-crypt-openssl-bignum)
+
+name=perl-crypt-openssl-rsa
+version=0.30
+release=1
+source=(http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/Crypt-OpenSSL-RSA-$version.tar.gz)
+
+build() {
+cd Crypt-OpenSSL-RSA-$version
+
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make pure_install doc_install  DESTDIR=$PKG
+
+find "$PKG" -name '.packlist' -delete
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
+}

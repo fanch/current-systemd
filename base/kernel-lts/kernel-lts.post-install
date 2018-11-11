@@ -1,0 +1,19 @@
+LK="."
+[ -L boot/kernel ] && LK="`readlink boot/kernel`"
+if [ "`dirname $LK`" != "." ]; then
+  echo "This is a efi installation"
+  ln -sf $LK boot/kernel
+  if [ -f boot/$LK ]; then
+    mv boot/kernel-4.14.79-NuTyX-lts boot/$LK 2>/dev/null
+    ln -sf $LK boot/kernel-4.14.79-NuTyX-lts
+  else
+    echo "EFI Partition not found, mount EFI Partition and re-install the kernel"
+  fi
+else
+  echo "This is a bios installation"
+  if [ -L boot/initrd ]; then
+    mkinitramfs 4.14.79-NuTyX-lts
+    ln -sf initrd-4.14.79-NuTyX-lts boot/initrd
+  fi
+  ln -sf kernel-4.14.79-NuTyX-lts boot/kernel
+fi

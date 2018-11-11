@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+    <title>NuTyX - Post-construction et génération de l'iso</title>
+ </head>
+ <body>
+   <table>
+    <tr>
+     <td width="30%">
+         <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+     </td>
+     <td>
+      <nav>
+       <ul>
+            <li><a href=".">Accueil</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="http://forum.nutyx.org/index.php?board=16">Forum</a></li>
+            <li><a href="packages.html">Paquets</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+       </ul>
+      </nav>
+     </td>
+    </tr>
+   </table>
+  <hr>
+   <h1>Post-construction et génération de l'iso</h1>
+    <p>Tous les paquets d'un système de base sont désormais disponibles. On peut finaliser et produire une ISO installable de notre NuTyX</p>
+  <ol>
+   <li>On commence par sortir de la NuTyX</li>
+<pre class="command"><kbd>exit</kbd></pre>
+   <p>On revérifie la variable LFS</p>
+<pre class="command"><kbd>echo $LFS</kbd></pre>
+   <p>Elle doit retourner quelque chose:</p>
+<pre class="output">/mnt/lfs </pre>
+   <li>On peut maintenant réentrer dans la nouvelle NuTyX pour finaliser les travaux</li>
+<pre class="command"><kbd>chroot $LFS /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u: \w\$' \
+/bin/bash --login</kbd></pre>
+Aucune erreur ne doit apparaître:
+<pre class="output">root [ / ]# </pre>
+   <li>On commence par adapter le fichier cards.conf. En effet, on utilisera désormais uniquement les recettes issues du projet git. Adaptez si necessaire la langue.</li>
+   <pre class="command"><kbd>cat &gt; /etc/cards.conf &lt;&lt; "EOF"
+dir /root/current/base
+logdir /var/log/pkgbuild
+locale fr
+base /root/current/base
+EOF</kbd></pre>
+   <li>Il ne nous reste plus qu'a complèter la NuTyX de base en compilant les paquets se trouvant dans la collection <b>base</b>. On se rend donc dans le bon dossier:</li>
+    <pre class="command"><kbd>cd /root/current/base</kbd></pre>
+   <li>Et on lance la compilation des paquets de la collection <b>base</b> dans le bon ordre</li>
+    <pre class="command"><kbd>pass</kbd></pre>
+    <pre class="output">=======&gt; PKGMK_INSTALL: install
+=======&gt; PKGMK_WORK_DIR: /root/extra/base/dialog/work
+=======&gt; PKGMK_SOURCE_DIR: /root/extra/base/dialog
+...</pre>
+   <li>La compilation des paquets <b>base</b> doit se terminer par le paquet <b>kernel</b>.</li>
+      <pre class="output">ADD: kernel, 6646 files: 100%
+=======&gt; Installing 'kernel1439823127x86_64.cards.tar' succeeded.
+=======&gt; compress kernel1439823127x86_64.cards.tar</pre>
+   <li>On ajoute les fichiers necessaires au fonctionnement de l'iso</li>
+   <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
+   <pre class="output">'/root/current/iso' -&gt; '/ISO'
+'/root/current/iso/isolinux' -&gt; '/ISO/isolinux'
+'/root/current/iso/isolinux/boot.cat' -&gt; '/ISO/isolinux/boot.cat'
+'/root/current/iso/isolinux/boot.msg' -&gt; '/ISO/isolinux/boot.msg'
+'/root/current/iso/isolinux/isolinux.bin' -&gt; '/ISO/isolinux/isolinux.bin'
+'/root/current/iso/isolinux/isolinux.cfg' -&gt; '/ISO/isolinux/isolinux.cfg'</pre>
+   <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
+   <pre class="output">'/boot/kernel-3.19.0' -&gt; '/ISO/isolinux/kernel'</pre>
+   <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
+   <pre class="output">'/boot/initrd-3.19.0' -&gt; '/ISO/isolinux/initrd'</pre>
+   <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Consultez les options en bas de la page avant d'aller plus loin si vous souhaiter ajouter des paquets et donc personnaliser votre ISO ou si vous souhaitez réduire la taille de celle-ci en supprimant les archives des binaires ainsi que les logs de construction.</div>
+   <li>On produit maintenant les fichiers squashfs qui seront utilisés par l'iso et effacer les fichiers squash existant si necessaire puisque la commande mksquashfs ne peut pas les écraser.</li>
+<pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
+cd /
+for dir in opt bin etc lib root run sbin usr var home
+do
+  [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
+  mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
+done</kbd></pre>
+   <li>On peut maintenant sortir de la NuTyX pour produire l'iso.</li>
+   <pre class="command"><kbd>exit</kbd></pre>
+   <li>On peut enfin générer notre ISO dont la version est à la date du jour.</li>
+   <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Avant de lancer la prochaine commande, assurez-vous que vous avez bien la variable <b>LFS</b> configurée et que les commandes <b>mkisofs</b> et <b>isohybrid</b> sont à disposition sur votre linux principale. Elles sont respectivement dans les paquets <b>cdrkit</b> et <b>syslinux</b>.</div>
+    <pre class="command"><kbd>sh $LFS/root/current/scripts/mkiso current-`date +%Y%m%d`</kbd></pre>
+    <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
+I: -input-charset not specified, using utf-8 (detected in locale settings)
+Size of boot image is 4 sectors -&gt; No emulation
+  3.82% done, estimate finish Fri Jan  9 21:46:48 2015
+  7.63% done, estimate finish Fri Jan  9 21:46:48 2015
+ 11.44% done, estimate finish Fri Jan  9 21:46:48 2015
+ 15.25% done, estimate finish Fri Jan  9 21:46:48 2015
+ 19.06% done, estimate finish Fri Jan  9 21:46:48 2015
+ 22.88% done, estimate finish Fri Jan  9 21:46:48 2015
+ 26.68% done, estimate finish Fri Jan  9 21:46:48 2015
+ 30.50% done, estimate finish Fri Jan  9 21:46:48 2015
+ 34.31% done, estimate finish Fri Jan  9 21:46:48 2015
+ 38.12% done, estimate finish Fri Jan  9 21:46:48 2015
+ 41.94% done, estimate finish Fri Jan  9 21:46:48 2015
+ 45.74% done, estimate finish Fri Jan  9 21:46:48 2015
+ 49.56% done, estimate finish Fri Jan  9 21:46:48 2015
+ 53.37% done, estimate finish Fri Jan  9 21:46:48 2015
+ 57.19% done, estimate finish Fri Jan  9 21:46:48 2015
+ 60.99% done, estimate finish Fri Jan  9 21:46:48 2015
+ 64.81% done, estimate finish Fri Jan  9 21:46:48 2015
+ 68.62% done, estimate finish Fri Jan  9 21:46:48 2015
+ 72.43% done, estimate finish Fri Jan  9 21:46:48 2015
+ 76.24% done, estimate finish Fri Jan  9 21:46:48 2015
+ 80.06% done, estimate finish Fri Jan  9 21:46:48 2015
+ 83.86% done, estimate finish Fri Jan  9 21:46:48 2015
+ 87.68% done, estimate finish Fri Jan  9 21:46:48 2015
+ 91.49% done, estimate finish Fri Jan  9 21:46:48 2015
+ 95.31% done, estimate finish Fri Jan  9 21:46:48 2015
+ 99.11% done, estimate finish Fri Jan  9 21:46:48 2015
+Total translation table size: 2048
+Total rockridge attributes bytes: 1751
+Total directory bytes: 4096
+Path table size(bytes): 38
+Max brk space used 28000
+165140 extents written (322 MB)</pre>
+   <p>Vous avez désormais une ISO qui se trouve dans le dossier $LFS</p>
+   <pre class="command"><kbd>ls $LFS/</kbd></pre>
+   <pre class="output">base   bin   etc   lib    NuTyX_x86_64-current-20181111.iso   root  sources  usr
+boot  home  lib64  NuTyX_x86_64-current-20181111.md5sum  run   srv      tmp     var
+dev   ISO   mnt    proc                                   sbin  sys      tools</pre>
+   <li>Il ne vous reste plus qu'à la transférer sur une clé usb et la tester</li>
+   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-current-20181111.iso of=/dev/sdb</kbd></pre>
+   <pre class="output">526336+0 enregistrements lus
+526336+0 enregistrements écrits
+269484032 octets (269 MB) copiés, 67.3208 s, 4.0 MB/s</pre>
+   </ol>
+    <p>Félicitations, vous avez maintenant entre les mains une ISO NuTyX de base prête à être installée sur toutes vos machines.</p>
+   <h2>Options</h2>
+    <ol>
+    <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
+<pre class="command"><kbd>rsync -a /root/current/base/ /base/
+</kbd></pre>
+     <p>Aucune erreur ne doit apparaître</p>
+     <p>On peut maintenant effacer les binaires du git</p>
+     <pre class="command"><kbd>find /root/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <p>Aucune erreur ne doit apparaître</p>
+     <p>On efface les logs.</p>
+     <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
+     <p>Si besoin est, les binaires et les logs se trouvent donc à la racine de la NuTyX</p>
+    <li>Le kernel compilé est très gros en taille. Si vous souhaitez réduire la taille de votre iso, vous pouvez supprimez la doc et les sources du kernel:</li>
+     <pre class="command"><kbd>pkgrm kernel.doc
+pkgrm kernel.devel</kbd></pre>
+   </ol>
+   <hr>
+   <p class="updated">Dernière mise à jour 04-02-2016 22:38</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+   </footer>
+ </body>
+</html>

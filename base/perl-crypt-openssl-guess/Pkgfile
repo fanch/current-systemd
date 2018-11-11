@@ -1,0 +1,22 @@
+# Description="Interface to OpenSSL PRNG methods.
+# URL: https://metacpan.org/pod/Crypt::OpenSSL::Guess
+# Packager: tnut <tnut@nutyx.org>
+# Contributors: Pierre B
+# Depends on: perl openssl 
+run=(perl)
+
+name=perl-crypt-openssl-guess
+version=0.11
+release=1
+source=(http://search.cpan.org/CPAN/authors/id/A/AK/AKIYM/Crypt-OpenSSL-Guess-$version.tar.gz)
+
+build() {
+cd Crypt-OpenSSL-Guess-$version
+
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make pure_install doc_install DESTDIR=$PKG
+
+find $PKG -name '.packlist' -delete
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
+}

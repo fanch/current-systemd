@@ -1,0 +1,28 @@
+# Description: Certificate Authority certificates, the Public Key Infrastructure.
+# URL: http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1
+# Packager: tnut <tnut@nutyx.org>
+
+name=ca-certificates
+version=0.9
+release=1
+source=(https://github.com/djlucas/make-ca/archive/v0.9/make-ca-$version.tar.gz
+	https://hg.mozilla.org/mozilla-central/raw-file/default/security/nss/lib/ckfw/builtins/certdata.txt
+	http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt)
+
+build() {
+install -vdm755 $PKG/{usr/sbin,etc/ssl/local}
+
+OPENSSL="`which openssl`"
+
+$OPENSSL x509 -in root.crt -text -fingerprint -setalias "CAcert Class 1 root" \
+   -addtrust serverAuth -addtrust emailProtection -addtrust codeSigning \
+   > $PKG/etc/ssl/local/CAcert_Class_1_root.pem
+$OPENSSL x509 -in class3.crt -text -fingerprint -setalias "CAcert Class 3 root" \
+        -addtrust serverAuth -addtrust emailProtection -addtrust codeSigning \
+        > $PKG/etc/ssl/local/CAcert_Class_3_root.pem
+
+cp certdata.txt $PKG/etc/ssl
+install -vm755 make-ca-$version/make-ca $PKG/usr/sbin/make-ca
+
+$PKG/usr/sbin/make-ca -D $PKG
+}

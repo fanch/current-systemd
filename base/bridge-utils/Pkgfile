@@ -1,0 +1,21 @@
+# Description: Utilities for configuring the Linux Ethernet bridge
+# URL: http://sourceforge.net/projects/bridge/
+# Contributors: Pierre B
+# Packager: tnut <tnut@nutyx.org>
+ 
+name=bridge-utils
+version=1.6
+release=3
+
+source=(http://www.kernel.org/pub/linux/utils/net/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+autoconf
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+mv $PKG/usr/sbin $PKG/sbin
+}

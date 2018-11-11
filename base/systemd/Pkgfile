@@ -1,0 +1,75 @@
+# Depends on: intltool perl-xml-parser dbus polkit ca-certificates elfutils gnutls iptables libgcrypt libidn libxkbcommon python3 valgrind meson
+
+description="system and service manager"
+url="http://www.freedesktop.org/wiki/Software/systemd"
+
+packager="tnut at nutyx dot org"
+
+name=systemd
+version=239
+release=1
+
+PKGMK_GROUPS=(devel doc man lib)
+#PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/systemd/systemd/archive/v$version/$name-$version.tar.gz
+		systemd-239-glibc_statx_fix-1.patch
+		systemd-239-meson-0.48.0_fixes-1.patch)
+
+build() {
+cd $name-$version
+
+sed '166,$ d' -i src/resolve/meson.build
+
+patch -Np1 -i ../systemd-239-glibc_statx_fix-1.patch
+patch -Np1 -i ../systemd-239-meson-0.48.0_fixes-1.patch
+
+sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
+
+mkdir -p build 
+cd    build 
+
+LANG=en_US.UTF-8		   \
+meson --prefix=/usr                \
+      --sysconfdir=/etc            \
+      --localstatedir=/var         \
+      -Dblkid=true                 \
+      -Dbuildtype=release          \
+      -Ddefault-dnssec=no          \
+      -Dfirstboot=false            \
+      -Dinstall-tests=false        \
+      -Dkill-path=/bin/kill        \
+      -Dkmod-path=/bin/kmod        \
+      -Dldconfig=false             \
+      -Dmount-path=/bin/mount      \
+      -Drootprefix=                \
+      -Drootlibdir=/lib            \
+      -Dsplit-usr=true             \
+      -Dsulogin-path=/sbin/sulogin \
+      -Dsysusers=false             \
+      -Dumount-path=/bin/umount    \
+      -Db_lto=false                \
+      ..
+
+LANG=en_US.UTF-8 ninja
+
+DESTDIR=$PKG LANG=en_US.UTF-8 ninja install
+
+rm -rfv $PKG/usr/lib/rpm
+
+for tool in runlevel reboot shutdown poweroff halt telinit; do
+     ln -sfv ../bin/systemctl $PKG/sbin/${tool}
+done
+ln -sfv ../lib/systemd/systemd $PKG/sbin/init
+
+cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
+#!/bin/bash
+rm -f /run/nologin
+EOF
+chmod 755 $PKG/lib/systemd/systemd-user-sessions
+
+cat >> $PKG/etc/machine-id << "EOF"
+# Begin Systemd addition
+systemd-machine-id-setup
+# End Systemd addition
+EOF
+}

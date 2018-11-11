@@ -1,0 +1,26 @@
+# Description: The MPFR package contains functions for multiple precision math
+# URL: http://www.mpfr.org
+# Maintainer: Guillaume Hanrot,Vincent Lefèvre,Patrick Pélissier,Philippe Théveny and Paul Zimmermann
+# Contributors: Pierre B
+# Packager: tnut <tnut@nutyx.org>
+
+name=mpfr
+version=4.0.1
+release=1
+source=(http://www.mpfr.org/mpfr-current/mpfr-$version.tar.xz)
+
+build() {
+cd mpfr-$version
+
+./configure --prefix=/usr \
+	--enable-thread-safe \
+	--libdir=/lib \
+	--docdir=/usr/share/doc/mpfr-$version
+make
+make check
+make DESTDIR=$PKG install
+make html
+make DESTDIR=$PKG install-html
+
+rm -rf $PKG/usr/share/info/dir
+}

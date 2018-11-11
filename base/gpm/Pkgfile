@@ -1,0 +1,53 @@
+# Description: A free library for arbitrary precision arithmetic.
+# URL: http://unix.schottelius.org/gpm
+# Packager: pierre at nutyx dot org
+
+name=gpm
+version=1.20.7
+release=4
+
+source=(http://www.nico.schottelius.org/software/$name/archives/$name-$version.tar.bz2
+		$name-$version-glibc_2.26-1.patch)
+
+build() {
+# build package
+source /etc/blfs-systemd-units
+wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+ 
+
+	cd $name-$version
+	sed -i -e 's:<gpm.h>:"headers/gpm.h":' src/prog/{display-buttons,display-coords,get-versions}.c &&
+	patch -Np1 -i ../$name-$version-glibc_2.26-1.patch 
+	./autogen.sh                                
+	./configure --prefix=/usr --sysconfdir=/etc
+	LDFLAGS="-lm" make
+	make ROOT=$PKG install
+	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so.1
+	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so
+	install -v -m644 conf/gpm-root.conf $PKG/etc
+
+	# unit
+	install -d -m 755 $PKG/etc/default
+	install -d -m 755 $PKG/usr/lib/tmpfiles.d
+	install -d -m 755 $PKG/lib/systemd/system
+
+cat > $PKG/lib/systemd/system/gpm.service << "EOF"
+[Unit]
+Description=Virtual console mouse server
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/gpm -m /dev/input/mice -t imps2
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+install -v -dm755 $PKG/etc/systemd/system/gpm.service.d
+echo "ExecStart=/usr/sbin/gpm <list of parameters>" > $PKG/etc/systemd/system/gpm.service.d/99-user.conf
+
+# Services
+tar xf $SRC/$scripts-$scriptsversion.tar.bz2
+cd $scripts-$scriptsversion
+make DESTDIR=$PKG install-gpm
+}

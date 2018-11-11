@@ -1,0 +1,24 @@
+description="Utilities for use with the Reiser file system."
+url="http://www.kernel.org/pub/linux/utils/fs/reiserfs/"
+packager="tnut <tnut@nutyx@org>"
+
+name=reiserfsprogs
+version=3.6.24
+release=1
+
+source=(https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${version}/$name-$version.tar.xz
+		musl-__compar_fn_t.patch musl-long_long_min_max.patch musl-prints.patch)
+
+
+build() {
+        cd $name-$version
+    CFLAGS="-fgnu89-inline"    
+	autoreconf -fiv
+			patch -p0 < $SRC/musl-prints.patch
+			patch -p0 < $SRC/musl-long_long_min_max.patch
+			patch -p0 < $SRC/musl-__compar_fn_t.patch
+	        ./configure --prefix=/usr  \
+            --bindir=/bin  
+        make
+        make DESTDIR=$PKG install
+}
