@@ -1119,6 +1119,50 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 
+echo "## For Gnome
+# Comment following 2 lines
+# if you don't want to install gnome
+#
+dir ${DEPOT}/gnome-extra|${URL}
+dir ${DEPOT}/gnome|${URL}
+#
+## For mate
+# Comment following 2 lines
+# if you don't want to install mate
+#
+dir ${DEPOT}/mate-extra|${URL}
+dir ${DEPOT}/mate|${URL}
+#
+## For kde5
+# Comment following 2 lines
+# if you don't want to install kde5
+#
+dir ${DEPOT}/kde5-extra|${URL}
+dir ${DEPOT}/kde5|${URL}
+#
+## For xfce4
+# Comment following 2 lines
+# if you don't want to install xfce4
+#
+dir ${DEPOT}/xfce4-extra|${URL}
+dir ${DEPOT}/xfce4|${URL}
+#
+#
+## Normally everything under this line
+# are needed stuffs
+#
+## For all the graphical applications
+dir ${DEPOT}/gui-extra|${URL}
+#
+## For a minimal graphical interface
+dir ${DEPOT}/gui|${URL}
+#
+## For all the console applications
+dir ${DEPOT}/cli-extra|${URL}
+#
+## For a minimal console interface
+dir ${DEPOT}/cli|${URL}
+#
 ## Chroot system without reboot possibilities for a chroot
 dir ${DEPOT}/base|${URL}
 #
@@ -1128,6 +1172,10 @@ base ${DEPOT}/base
 ## If you want to keep more collections remove comments below
 # Adjust to your needs
 #
+# base ${DEPOT}/cli
+# base ${DEPOT}/cli-extra
+# base ${DEPOT}/gui
+# base ${DEPOT}/gui-extra
 # base ${DEPOT}/..." > ${FOLDER}/etc/cards.conf
 }
 generate_nutyx_version() {
