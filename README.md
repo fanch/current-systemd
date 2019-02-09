@@ -1,4 +1,4 @@
-## Ports for constructing the 'base'  collections from the 'current-systemd' branch of version of NuTyX
+## Ports for constructing the 'gnome'  collections from the 'current-systemd' branch of version of NuTyX
 
 Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
 http://www.nutyx.org/en/build-package.html
