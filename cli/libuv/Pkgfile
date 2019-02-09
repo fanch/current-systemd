@@ -1,0 +1,20 @@
+# Depends: libnsl
+contributors="Greg, Remy"
+packager="tnut <tnut@nutyx.org>"
+description="Cross-platform asynchronous I/O"
+url="https://github.com/"
+
+name=libuv
+version=1.24.1
+release=1
+
+source=(https://dist.libuv.org/dist/v${version}/$name-v$version.tar.gz)
+
+build() {
+cd $name-v$version
+sh autogen.sh
+./configure --prefix=/usr \
+            --disable-static
+make
+make DESTDIR=$PKG install
+}

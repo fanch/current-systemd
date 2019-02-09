@@ -11,7 +11,11 @@ PKGMK_GROUPS=(devel man doc)
 
 build() {
 cd acl-*
-./configure --prefix=/usr --bindir=/bin
+INSTALL_USER=root  \
+INSTALL_GROUP=root \
+./configure --prefix=/usr --libexecdir=/usr/lib \
+            --bindir=/bin \
+            --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install 
 install -d $PKG/lib

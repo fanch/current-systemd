@@ -1,0 +1,19 @@
+# Depends on: yelp yelp-tools yelp-xsl docbook-xsl vte3 gnutls itstool gtk-vnc itstool libsecret telepathy-glib vala vte avahi appstream-glib freerdp 
+
+description="Remote desktop client for Gnome"
+url="https://gnome.org"
+contributors=""
+packager="fanch <fanch@nutyx.org>"
+ 
+name=vinagre
+version=3.22.0
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --enable-compile-warnings=minimum 
+  make
+  make DESTDIR=$PKG install
+}

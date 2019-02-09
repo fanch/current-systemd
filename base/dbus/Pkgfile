@@ -1,11 +1,12 @@
-# Depends on: systemd expat xorg-libx11 xorg-libsm xorg-libice
+# Depends on: systemd expat 
+
 description="Bus message system"
 url="http://dbus.freedesktop.org/releases/dbus"
 packager="tnut <tnut@nutyx.org>"
 maintainer="tnut <tnut@nutyx.org>"
 
 name=dbus
-version=1.12.10
+version=1.12.12
 release=1
 source=(http://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.gz)
 
@@ -21,15 +22,28 @@ cd $name-$version
             --docdir=/usr/share/doc/dbus-$version \
             --with-console-auth-dir=/run/console \
             --with-system-pid-file=/run/dbus/pid \
-            --with-system-socket=/run/dbus/system_bus_socket \
-            --with-systemdsystemunitdir=/lib/systemd/system \
-            --enable-systemd 
+            --with-system-socket=/run/dbus/system_bus_socket  \
+			--without-x
 
 make
 make DESTDIR=$PKG install
+
 mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) $PKG/usr/lib/libdbus-1.so
 ln -sv $PKG/etc/machine-id $PKG/var/lib/dbus
+
 chown -v root:messagebus $PKG/usr/libexec/dbus-daemon-launch-helper
 chmod -v      4750       $PKG/usr/libexec/dbus-daemon-launch-helper
+
+cat > $PKG/etc/dbus-1/session-local.conf << "EOF"
+<!DOCTYPE busconfig PUBLIC
+ "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+
+  <!-- Search for .service files in /usr/local -->
+  <servicedir>/usr/local/share/dbus-1/services</servicedir>
+
+</busconfig>
+EOF
 }

@@ -1,0 +1,17 @@
+# Description: rpcsvc protocol definitions from glibc.
+# URL: https://github.com/thkukuk/rpcsvc-proto
+# Packager: pierre at nutyx dot org
+# Depends on: 
+
+name=rpcsvc-proto 
+version=1.4
+release=1
+source=( https://github.com/thkukuk/rpcsvc-proto/archive/v$version/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	autoreconf -fi                
+	./configure --sysconfdir=/etc
+	make
+	make DESTDIR=$PKG install
+}

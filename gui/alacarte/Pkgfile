@@ -1,0 +1,22 @@
+# Description: Menu editor for gnome.
+# URL: http://www.gnome.org/
+# Packager: "fanch <fanch@nutyx.com>"
+# Contributors: Tnut
+# Depends on: gnome-menus python-gobject gtk-update-icon-cache
+run=(gtk-update-icon-cache)
+
+name=alacarte
+version=3.11.91
+release=4
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var  \
+--disable-static 
+make
+make DESTDIR=$PKG install
+}

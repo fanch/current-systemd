@@ -1,0 +1,40 @@
+# Description: The BIND package includes the client side programs nslookup, dig and host. 
+# URL: http://www.isc.org/downloads/bind/ 
+# Packager: tnut at nutyx dot org
+# Depends on: kerberos libcap libxml2 libidn geoip mariadb
+
+name=bind
+version=9.12.3-P1
+release=1
+
+source=(ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz
+		tmpfiles.conf sysusers.conf named.service named.conf)
+
+build(){
+    cd $name-$version
+    ./configure --prefix=/usr
+
+	make -C lib/dns
+	make -C lib/isc
+	make -C lib/bind9
+	make -C lib/isccfg
+	make -C lib/irs
+	make -C bin/dig
+
+	make DESTDIR=$PKG -C bin/dig install
+
+    # doc
+	install -v -m755 -d $PKG/usr/share/doc/bind-$version/{arm,misc}
+	install -v -m644 doc/arm/*.html \
+	$PKG/usr/share/doc/bind-$version/arm
+	install -v -m644 \
+	doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap,sdb} \
+	$PKG/usr/share/doc/bind-$version/misc
+
+    # service
+	install -D -m644 $SRC/tmpfiles.conf $PKG/usr/lib/tmpfiles.d/$name.conf
+	install -D -m644 $SRC/sysusers.conf $PKG/usr/lib/sysusers.d/$name.conf
+	install -D -m644 $SRC/named.service $PKG/lib/systemd/system/named.service
+	install -D -m640 -o 0 -g 40 $SRC/named.conf $PKG/etc/named.conf
+	mv $PKG/etc/named.conf{,.example}
+}

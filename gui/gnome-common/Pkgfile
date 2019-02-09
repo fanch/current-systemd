@@ -1,0 +1,18 @@
+description="Common macros pour GNOME 3"
+url="http://www.gnome.org"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+name=gnome-common
+version=3.18.0
+release=4
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+
+rm -r $PKG/usr/share/aclocal
+}

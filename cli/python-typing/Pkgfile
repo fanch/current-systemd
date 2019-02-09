@@ -1,0 +1,16 @@
+# Description: Backport of the typing module from Python 3.5+.
+# URL: https://docs.python.org/3/library/typing.html
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: python-setuptools
+ 
+name=python-typing
+version=3.6.6
+release=1
+source=(https://files.pythonhosted.org/packages/source/t/typing/typing-${version}.tar.gz)
+
+build() {
+    cd typing-$version
+    python3 setup.py install --prefix=/usr --root=$PKG
+}
+

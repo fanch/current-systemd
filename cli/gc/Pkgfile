@@ -1,0 +1,19 @@
+# Description: A garbage collector for C and C++
+# URL: http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+# Packager: pierre at nutyx dot org
+# Depends on: libatomic-ops 
+
+name=gc
+version=8.0.0
+release=1
+
+source=(http://www.hboehm.info/gc/gc_source/${name}-${version}.tar.gz)
+
+build() {
+cd gc-*
+./configure --prefix=/usr \
+--disable-static \
+--enable-cplusplus 
+make
+make DESTDIR=$PKG install
+}

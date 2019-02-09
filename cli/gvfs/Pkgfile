@@ -1,0 +1,32 @@
+# Depends on: ninja meson avahi dbus-glib intltool libcdio-paranoia libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive samba bluez gcr
+
+description="Userspace virtual filesystem implemented as a pluggable module for gio"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry"
+
+name=gvfs
+version=1.38.1
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build 
+cd    build 
+meson --prefix=/usr     \
+      --sysconfdir=/etc \
+      -Dfuse=false      \
+      -Dgphoto2=false   \
+      -Dafc=false       \
+      -Dbluray=false    \
+      -Dnfs=false       \
+      -Dmtp=false       \
+      -Dsmb=false       \
+      -Ddnssd=false     \
+      -Dgoa=false       \
+      -Dgoogle=false    .. 
+ninja
+DESTDIR=$PKG ninja install
+}
+

@@ -1,0 +1,14 @@
+# Description: Tools for internationalizing Python applications.
+# URL: http://babel.pocoo.org/
+# Maintainer: Alessio Sergi <al3hex@gmail.com>
+# Depends on: python-setuptools python-pytz
+
+name=python-babel
+version=2.6.0
+release=1
+source=(https://files.pythonhosted.org/packages/source/B/Babel/Babel-${version}.tar.gz)
+build() {
+	cd Babel-$version
+	/usr/bin/python3 setup.py build
+	/usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+}

@@ -1,0 +1,59 @@
+# Description: The Kerberos network authentication system
+# URL: http://web.mit.edu/kerberos/
+# Packager: tnut at nutyx dot org
+
+name=kerberos
+version=1.16.2
+release=1
+
+source=(http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
+
+build() {
+	source /etc/blfs-systemd-units
+	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+    
+cd krb5-$version
+cd src
+        
+sed -i -e 's@\^u}@^u cols 300}@' tests/dejagnu/config/default.exp     
+sed -i -e '/eq 0/{N;s/12 //}'    plugins/kdb/db2/libdb2/test/run.test
+
+autoconf
+
+./configure --prefix=/usr            \
+            --sysconfdir=/etc        \
+            --localstatedir=/var/lib \
+            --with-system-et         \
+            --with-system-ss         \
+            --with-system-verto=no   \
+            --enable-dns-for-realm
+make
+make DESTDIR=$PKG install
+
+for LIBRARY in gssapi_krb5 gssrpc k5crypto kadm5clnt_mit kadm5srv_mit kdb5 krb5 krb5support verto; do
+	chmod -v 755 $PKG/usr/lib/lib$LIBRARY.so.*.*
+done
+
+unset LIBRARY
+
+mkdir -p $PKG/{bin,lib}
+mv -v $PKG/usr/lib/libkrb5.so.3* $PKG/lib
+mv -v $PKG/usr/lib/libk5crypto.so.3* $PKG/lib
+mv -v $PKG/usr/lib/libkrb5support.so.0* $PKG/lib
+
+ln -v -sf ../../lib/libkrb5.so.3.3        $PKG/usr/lib/libkrb5.so
+ln -v -sf ../../lib/libk5crypto.so.3.1    $PKG/usr/lib/libk5crypto.so
+ln -v -sf ../../lib/libkrb5support.so.0.1 $PKG/usr/lib/libkrb5support.so
+
+mv -v $PKG/usr/bin/ksu $PKG/bin
+chmod -v 755 $PKG/bin/ksu 
+
+install -v -dm755 $PKG/usr/share/doc/krb5-$version
+cp -vfr ../doc/*  $PKG/usr/share/doc/krb5-$version
+
+cd $SRC
+
+tar xf $scripts-$scriptsversion.tar.bz2
+cd $SRC/$scripts-$scriptsversion
+    make DESTDIR=$PKG install-krb5
+}

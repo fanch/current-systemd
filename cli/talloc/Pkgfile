@@ -1,0 +1,24 @@
+# Description: Hierarchical, reference counted memory pool system with destructors.
+# URL: https://talloc.samba.org
+# Packager: tnut at nutyx dot org
+# Depends on: python2 libxslt
+
+name=talloc
+version=2.1.14
+release=1
+source=(https://samba.org/ftp/$name/$name-$version.tar.gz
+		fix_test_path.patch)
+
+build() {
+cd $name-$version
+sed -i -e 's#python#python2#g' buildtools/bin/waf
+patch -p1 < ../fix_test_path.patch
+./configure --prefix=/usr \
+     --sysconfdir=/etc/samba \
+     --localstatedir=/var \
+     --bundled-libraries=NONE \
+     --builtin-libraries=replace \
+     --enable-talloc-compat1 
+make
+make DESTDIR=$PKG install
+}

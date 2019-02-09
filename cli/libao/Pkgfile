@@ -1,0 +1,20 @@
+# Description: Cross-platform audio output library and plugins.
+# URL: http://www.xiph.org/ao/
+# Packager: fanch at nutyx dot org
+# Depends on: alsa-lib
+
+name=libao
+version=1.2.2
+release=1
+
+source=()
+
+build() {
+git clone https://git.xiph.org/$name.git $name
+cd $name
+./autogen.sh
+./configure --prefix=/usr \
+		--enable-alsa-mmap
+make
+make DESTDIR=$PKG install
+}

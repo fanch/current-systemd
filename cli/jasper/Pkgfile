@@ -1,0 +1,24 @@
+# Description: A software-based implementation of the codec specified in the emerging JPEG-2000 Part1 std
+# URL: http://www.ece.uvic.ca/~mdadams/jasper/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake libjpeg-turbo 
+
+name=jasper
+version=2.0.14
+release=3
+
+source=(http://www.ece.uvic.ca/~mdadams/$name/software/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	mkdir BUILD 
+	cd    BUILD 
+	cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_BUILD_TYPE=Release     \
+      -DCMAKE_SKIP_INSTALL_RPATH=YES \
+      -DJAS_ENABLE_DOC=NO            \
+      -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/$name-$version \
+      .. 
+	make
+	make DESTDIR=$PKG install
+}

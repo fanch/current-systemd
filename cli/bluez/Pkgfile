@@ -1,0 +1,48 @@
+# Depends on: libical libvorbis alsa-lib libusb-compat libsndfile cups glib
+
+description="The BlueZ package contains the Bluetooth protocol stack for Linux."
+url="http://www.bluez.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=bluez
+version=5.50
+release=1
+
+source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+	
+build() {
+cd $name-$version
+
+./configure --prefix=/usr         \
+            --sysconfdir=/etc     \
+            --localstatedir=/var  \
+            --enable-library
+make
+make DESTDIR=$PKG install
+
+install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
+install -v -m644 src/main.conf $PKG/etc/bluetooth/main.conf
+
+ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
+
+
+cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
+# Start rfcomm.conf
+# Set up the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.
+# Use one line per command
+# See the rfcomm man page for options
+
+
+# End of rfcomm.conf
+EOF
+
+cat > $PKG/etc/bluetooth/uart.conf << "EOF"
+# Start uart.conf
+# Attach serial devices via UART HCI to BlueZ stack
+# Use one line per device
+# See the hciattach man page for options
+
+# End of uart.conf
+EOF
+}

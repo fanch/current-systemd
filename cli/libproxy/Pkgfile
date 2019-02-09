@@ -1,0 +1,31 @@
+# Depends on: cmake networkmanager python2 webkitgtk
+
+description="A library handling all the details of proxy configuration."
+url="http://github.com/libproxy/libproxy"
+packager="fanch <fanch@nutyx.org>"
+contributors="Fanch"
+
+PKGMK_KEEP_SOURCES="no"
+name=libproxy
+version=0.4.15
+release=1
+source=(https://github.com/libproxy/libproxy/archive/${version}.tar.gz)
+
+build() {
+mkdir build
+cd build
+cmake ../${name}-${version} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIBEXEC_INSTALL_DIR=/usr/lib/libproxy \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DPERL_VENDORINSTALL=yes \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DWITH_WEBKIT3=ON \
+    -DWITH_MOZJS=OFF \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+    -DCMAKE_C_FLAGS="${CFLAGS}" \
+    -DPYTHON2_EXECUTABLE:FILEPATH=/usr/bin/python2 \
+    -DBIPR=0
+make
+make DESTDIR=$PKG install
+}

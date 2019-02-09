@@ -1,0 +1,24 @@
+# Depends on: xorg-libx11 xorg-libxext xorg-libxi xorgproto xorg-libxrandr xorg-libxinerama xorg-xrandr
+
+description="Small commandline tool to configure devices."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+PKGMK_GROUPS=(doc man)
+url="http://xorg.freedesktop.org"
+
+run=(xorg-xrandr)
+
+name=xorg-xinput
+version=1.6.2
+release=3
+
+_name=${name/xorg-/}
+
+source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+}

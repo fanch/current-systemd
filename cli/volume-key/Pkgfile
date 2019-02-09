@@ -1,0 +1,19 @@
+# Description: Manipulating storage volume and storing volumes to handle forgotten passphrases. 
+# URL: https://pagure.io/volume_key
+# Packager: pierre at nutyx dot org
+# Depends on:  cryptsetup glib gpgme nss python2 swig
+
+_name=volume_key
+name=volume-key
+version=0.3.12
+release=1
+
+source=(https://releases.pagure.org/${_name}/${_name}-$version.tar.xz)
+
+build() {
+  cd ${_name}-$version
+  autoreconf -fiv
+  ./configure --prefix=/usr 
+  make
+  make DESTDIR=$PKG install
+}

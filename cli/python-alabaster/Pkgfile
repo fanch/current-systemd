@@ -1,0 +1,14 @@
+# Description: Configurable sidebar-enabled Sphinx theme.
+# URL: https://alabaster.readthedocs.io/
+# Maintainer: Alessio Sergi <al3hex@gmail.com>
+# Depends on: python-setuptools 
+
+name=python-alabaster
+version=0.7.12
+release=1
+source=(https://files.pythonhosted.org/packages/source/a/alabaster/alabaster-${version}.tar.gz)
+build() {
+	cd alabaster-$version
+	/usr/bin/python3 setup.py build
+	/usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+}

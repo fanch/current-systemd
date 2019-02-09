@@ -1,0 +1,19 @@
+# Depends on: itstool gtk3 libnotify yelp-tools 
+
+description="Display graphical dialog boxes from shell scripts."
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut,Greg"
+
+name=zenity
+version=3.30.0
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/3.30/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var
+make
+make DESTDIR=$PKG install
+}

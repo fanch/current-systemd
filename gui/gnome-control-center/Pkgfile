@@ -1,0 +1,23 @@
+# Depends on: autoconf git accountsservice clutter-gtk colord-gtk gnome-online-accounts gnome-settings-daemon grilo libgtop libpwquality kerberos shared-mime-info cheese cups samba gnome-bluetooth ibus meson modemmanager network-manager-applet ninja gnome-color-manager sound-theme-freedesktop cups-pk-helper vino gsettings-desktop-schemas wayland gdk-pixbuf
+
+description="The Control Center for GNOME"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Fanch, Tnut, jayce"
+run=(iso-codes gsettings-desktop-schemas)
+
+name=gnome-control-center
+version=3.30.3
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed -i '/ln -s/s/s /sf /' panels/user-accounts/meson.build
+mkdir build
+cd build
+meson --prefix=/usr ..
+ninja
+DESTDIR=$PKG ninja install
+}
+						

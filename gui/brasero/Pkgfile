@@ -1,0 +1,22 @@
+# Depends on: shared-mime-info gstreamer-plugins-base itstool libcanberra libnotify gobject-introspection libburn libisofs tracker gvfs dvd+rw-tools libdvdcss cdrdao json-glib
+
+description="Brasero is an application used to burn CD/DVD on the GNOME Desktop"
+url="https://www.gnome.org"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+run=(shared-mime-info)
+
+name=brasero
+version=3.12.2
+release=4
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr                \
+            --enable-compile-warnings=no \
+            --enable-cxx-warnings=no 
+	make
+	make DESTDIR=$PKG install
+}

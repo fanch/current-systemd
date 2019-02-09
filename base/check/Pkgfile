@@ -10,8 +10,9 @@ source=(https://github.com/libcheck/$name/releases/download/$version/$name-$vers
 
 build () {
 cd $name-$version
-./configure --prefix=/usr --disable-static
+./configure --prefix=/usr 
 make
 make DESTDIR=$PKG install
+sed -i '1 s/tools/usr/' $PKG/usr/bin/checkmk
 rm -r $PKG/usr/share/info
 }

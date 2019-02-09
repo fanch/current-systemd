@@ -1,0 +1,21 @@
+# Depends on: xorg-libx11 xcb-util 
+
+description="Monitor and display application startup"
+url="http://freedesktop.org/wiki/Software/startup-notification"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=startup-notification
+version=0.12
+release=3
+
+source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+sed -i -e '/AC_PATH_XTRA/d' configure.in
+autoreconf --force --install
+./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+make 
+make DESTDIR=$PKG install
+} 

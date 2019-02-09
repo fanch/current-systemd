@@ -1,0 +1,22 @@
+# Description: Easily download, build, install, upgrade, and uninstall Python packages
+# URL: https://bitbucket.org/pypa/setuptools
+# Packager: alienus at nutyx dot org
+# Depends on: python2 python
+
+name=python-setuptools
+version=40.6.2
+release=1
+source=(https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${version}.zip)
+
+build() {
+  cd $SRC/setuptools-$version
+    
+  python3 bootstrap.py  
+  python3 setup.py build install --root=$PKG  --optimize=1 --skip-build
+    
+  python2 bootstrap.py
+  python2 setup.py build install --root=$PKG   --optimize=1 --skip-build 
+  
+  rm -r $PKG/usr/lib/python3.7/site-packages
+  rm -r $PKG/usr/bin/easy_install-3.7
+}

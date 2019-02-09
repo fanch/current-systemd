@@ -1,0 +1,21 @@
+# Description: Libraries and userspace tools which provide a secure layer over a reliable transport layer. 
+# URL: http://www.gnu.org/software/gnutls/
+# Packager: pierre at nutyx dot org
+# Depends on: libtasn1 libidn libunistring nettle p11-kit
+
+name=gnutls
+version=3.6.5
+release=1
+
+source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--with-zlib \
+--with-default-trust-store-file=/etc/ssl/ca-bundle.crt \
+--disable-guile
+make
+make DESTDIR=$PKG install
+rm -rf $PKG/usr/share/info/dir
+}

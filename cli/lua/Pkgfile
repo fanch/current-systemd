@@ -1,0 +1,35 @@
+# Description: Powerful lightweight programming language designed for extending applications.
+# URL: URL: http://www.lua.org
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: 
+
+name=lua
+version=5.3.5
+release=1
+source=(http://www.lua.org/ftp/lua-$version.tar.gz
+		lua-5.3.5-shared_library-1.patch lua.pc)
+
+build() {
+	cd lua-$version
+
+	patch -Np1 -i $SRC/lua-5.3.5-shared_library-1.patch 
+	
+	sed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:' src/luaconf.h
+
+	make MYCFLAGS="-DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1" linux
+
+	make \
+		TO_LIB="liblua.so liblua.so.5.3 liblua.so.5.3.4" \
+		INSTALL_DATA='cp -d' \
+		INSTALL_TOP="$PKG/usr" \
+		INSTALL_MAN="$PKG/usr/man/man1" \
+		install
+
+	install -m 0644 -D $SRC/lua.pc $PKG/usr/lib/pkgconfig/lua5.3.pc
+
+	mkdir -pv                      $PKG/usr/share/doc/lua-5.3.5 
+	cp -v doc/*.{html,css,gif,png} $PKG/usr/share/doc/lua-5.3.5 
+
+	install -v -m644 -D $SRC/lua.pc $PKG/usr/lib/pkgconfig/lua.pc
+}

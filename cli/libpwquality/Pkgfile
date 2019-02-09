@@ -1,0 +1,22 @@
+# Description: Library for password quality checking and generating random passwords
+# URL: https://fedorahosted.org/libpwquality/
+# Packager: pierre at nutyx dot org
+# Depends on: python2 cracklib
+
+name=libpwquality
+version=1.4.0
+release=1
+
+source=(https://github.com/libpwquality/libpwquality/releases/download/$name-$version/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-python-rev=2.7 \
+        --with-python-binary=python2 \
+        --with-securedir=/lib/security
+make
+make DESTDIR=$PKG install
+}

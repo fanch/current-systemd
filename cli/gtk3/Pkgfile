@@ -1,0 +1,45 @@
+# Depends on: wayland-protocols gtk-doc adwaita-icon-theme libepoxy xorg-libxinerama xorg-libxrandr xorg-libxcursor at-spi2-atk cups colord xorg-libxi atk cairo pango gdk-pixbuf gtk-update-icon-cache  libxkbcommon python-six
+
+description="Libraries used for creating graphical user interfaces for applications."
+url="http://www.gtk.org/"
+packager="tnut <tnut@nutyx.org>"
+contributor="Pierre B, Greg"
+run=(adwaita-icon-theme)
+
+name=gtk3
+version=3.24.2
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+
+build() {
+cd gtk+-$version
+sed -i 's/dfeault/default/' docs/tools/shooter.c
+./configure --prefix=/usr \
+--sysconfdir=/etc         \
+--mandir=/usr/share/man   \
+--infodir=/usr/share/info \
+--enable-broadway-backend \
+--enable-x11-backend      \
+--enable-wayland-backend
+
+make || make -j1
+make DESTDIR=$PKG install
+
+cat > $PKG/etc/gtk-3.0/settings.ini << "EOF"
+[Settings]
+gtk-theme-name = Adwaita
+gtk-icon-theme-name = gnome
+gtk-font-name = DejaVu Sans 12
+gtk-cursor-theme-size = 18
+gtk-toolbar-style = GTK_TOOLBAR_BOTH_HORIZ
+gtk-xft-antialias = 1
+gtk-xft-hinting = 1
+gtk-xft-hintstyle = hintslight
+gtk-xft-rgba = rgb
+gtk-cursor-theme-name = Adwaita
+EOF
+# Empaqueté ds gtk-update-icon-cache
+rm $PKG/{usr/bin/gtk-update-icon-cache,usr/share/man/man1/gtk-update-icon-cache.1}
+}
+

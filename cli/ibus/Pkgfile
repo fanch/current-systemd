@@ -1,0 +1,29 @@
+# Depends on: dconf iso-codes gobject-introspection gtk2 gtk-doc libnotify vala python python-gobject  libxkbcommon dbus-python python-xdg
+
+description="IBus is an Intelligent Input Bus."
+url="http://ibus.googlecode.com"
+packager="tnut <tnut@nutyx.org>"
+
+name=ibus
+version=1.5.19
+release=1
+
+source=(https://github.com/ibus/ibus/releases/download/$version/$name-$version.tar.gz)
+build() {
+wget https://www.unicode.org/Public/zipped/10.0.0/UCD.zip
+mkdir -p               $PKG/usr/share/unicode/ucd 
+unzip -u $SRC/UCD.zip -d $PKG/usr/share/unicode/ucd
+cd $name-$version
+sed -i 's@/desktop/ibus@/org/freedesktop/ibus@g' \
+    data/ibus.schemas.in \
+    data/dconf/org.freedesktop.ibus.gschema.xml.in
+
+./configure --prefix=/usr           \
+            --sysconfdir=/etc       \
+            --enable-gtk-doc        \
+            --disable-unicode-dict  \
+            --disable-emoji-dict
+rm -f tools/main.c
+make
+make DESTDIR=$PKG install
+}

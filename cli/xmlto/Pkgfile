@@ -1,0 +1,17 @@
+# Description: Convert xml to many other formats
+# URL: http://cyberelk.net/tim/software/xmlto/
+# Packager: pierre at nutyx dot org
+# Depends on: libxslt docbook-xsl docbook-xml links
+
+name=xmlto
+version=0.0.28
+release=2
+
+source=(https://releases.pagure.org/$name/$name-$version.tar.bz2)
+
+build() {
+LINKS="/usr/bin/links" cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

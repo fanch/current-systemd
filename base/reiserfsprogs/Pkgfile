@@ -3,22 +3,23 @@ url="http://www.kernel.org/pub/linux/utils/fs/reiserfs/"
 packager="tnut <tnut@nutyx@org>"
 
 name=reiserfsprogs
-version=3.6.24
-release=1
+version=3.6.27
+release=2
 
 source=(https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${version}/$name-$version.tar.xz
-		musl-__compar_fn_t.patch musl-long_long_min_max.patch musl-prints.patch)
+        reiserfsprogs-3.6.27-loff_t.patch)
 
 
 build() {
         cd $name-$version
-    CFLAGS="-fgnu89-inline"    
+	patch -p1 -i ../reiserfsprogs-3.6.27-loff_t.patch
 	autoreconf -fiv
-			patch -p0 < $SRC/musl-prints.patch
-			patch -p0 < $SRC/musl-long_long_min_max.patch
-			patch -p0 < $SRC/musl-__compar_fn_t.patch
-	        ./configure --prefix=/usr  \
-            --bindir=/bin  
+        ./configure --prefix=/usr \
+                --sbindir=/sbin
         make
         make DESTDIR=$PKG install
+        ln -sf reiserfsck $PKG/sbin/fsck.reiserfs
+        ln -sf mkreiserfs $PKG/sbin/mkfs.reiserfs
+
+	rm $PKG/usr/lib/libreiserfscore.la
 }

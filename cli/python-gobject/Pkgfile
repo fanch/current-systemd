@@ -1,0 +1,28 @@
+# Depends on: python-cairo python2-cairo gobject-introspection xorg-libxxf86vm libffi
+
+description="provides the links of Python 3 for the class GObject of GLib."
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=python-gobject
+version=3.30.1
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
+
+build() {
+cd pygobject-$version
+mkdir python2
+pushd python2
+meson --prefix=/usr -Dpython=python2 ..
+ninja
+popd
+DESTDIR=$PKG ninja -C python2 install
+mkdir python3
+pushd python3
+meson --prefix=/usr -Dpython=python3
+ninja
+popd
+DESTDIR=$PKG ninja -C python3 install
+}

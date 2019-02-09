@@ -1,0 +1,21 @@
+# Description: A library providing a set of interfaces for accessibility
+# URL: http://www.gtk.org/
+# Packager: pierre at nutyx dot org
+# Depends on: glib pcre gobject-introspection meson ninja
+
+name=atk
+version=2.30.0
+release=1
+source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build 
+cd    build 
+meson --prefix=/usr 
+ninja  -j1
+DESTDIR=$PKG ninja  install
+}
+
+
+

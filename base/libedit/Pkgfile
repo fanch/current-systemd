@@ -4,9 +4,9 @@
 # Contributors: Greg
 
 name=libedit
-version=20170329.3.1
-release=2
-_version=20170329-3.1
+version=20180525.3.1
+release=1
+_version=20180525-3.1
 source=(http://www.thrysoee.dk/editline/libedit-${_version}.tar.gz)
 
 build(){

@@ -1,0 +1,19 @@
+# Depends on: intltool
+
+description="The Sound Theme Freedesktop package contains sound themes for the desktop."
+url="http://freedesktop.org/wiki/Specifications/sound-theme-spec"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+name=sound-theme-freedesktop
+version=0.8
+release=3
+
+source=(http://people.freedesktop.org/~mccann/dist/$name-$version.tar.bz2)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr --disable-static 
+	make
+	make DESTDIR=$PKG install
+}

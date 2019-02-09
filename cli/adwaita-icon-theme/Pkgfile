@@ -1,0 +1,21 @@
+# Depends on: intltool glib gtk-update-icon-cache hicolor-icon-theme icon-naming-utils librsvg
+
+description="Adwaita icon theme."
+url="http://www.gnome.org/"
+maintainer="http://linuxfromscratch.org/"
+packager="tnut <tnut@nuty.org>"
+
+run=(librsvg hicolor-icon-theme gtk-update-icon-cache)
+
+name=adwaita-icon-theme
+version=3.30.0
+release=2
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+

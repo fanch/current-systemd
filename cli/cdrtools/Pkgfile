@@ -1,0 +1,21 @@
+# Description: Set of programs for CD/DVD recording, ISO image creation and audio CD extraction
+# URL: http://cdrkit.org/
+# Packager: pierre at nutyx dot org
+# Depends on: 
+
+name=cdrtools
+version=3.02
+release=1
+_version=3.02a09
+source=(https://downloads.sourceforge.net/$name/$name-${_version}.tar.bz2)
+
+build() {
+	cd $name-$version
+	export GMAKE_NOWARN=true 
+make -j1 INS_BASE=$PKG/usr DEFINSUSR=root DEFINSGRP=root
+export GMAKE_NOWARN=true 
+make INS_BASE=$PKG/usr DEFINSUSR=root DEFINSGRP=root install 
+install -v -m755 -d $PKG/usr/share/doc/$name-$version
+install -v -m644 README ABOUT doc/*.ps \
+                    $PKG/usr/share/doc/$name-$version
+}

@@ -1,0 +1,19 @@
+# Depends on: enchant gtk3
+
+description="Provides word-processor-style highlighting and replacement of misspelled words in a GtkTextView widget."
+url="http://gtkspell.sourceforge.net/"
+packager="fanch <fanch@nutyx.org>"
+contributors="Pierre B"
+
+name=gtkspell3
+version=3.0.10
+release=1
+
+source=(https://downloads.sourceforge.net/gtkspell/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+  ./configure --prefix=/usr --disable-silent-rules
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,21 @@
+# Depends on: intltool glib gobject-introspection
+
+description="GNOME menu specifications."
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+name=gnome-menus
+version=3.31.4
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed -i '129i </Exclude>' layout/gnome-applications.menu
+./configure  --prefix=/usr --sysconfdir=/etc \
+      --disable-static
+make
+make DESTDIR=$PKG install
+}

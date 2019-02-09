@@ -4,16 +4,13 @@
 
 name=gpm
 version=1.20.7
-release=4
+release=6
 
 source=(http://www.nico.schottelius.org/software/$name/archives/$name-$version.tar.bz2
-		$name-$version-glibc_2.26-1.patch)
+		$name-$version-glibc_2.26-1.patch services-scripts.tar.xz)
+
 
 build() {
-# build package
-source /etc/blfs-systemd-units
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
- 
 
 	cd $name-$version
 	sed -i -e 's:<gpm.h>:"headers/gpm.h":' src/prog/{display-buttons,display-coords,get-versions}.c &&
@@ -46,8 +43,10 @@ EOF
 install -v -dm755 $PKG/etc/systemd/system/gpm.service.d
 echo "ExecStart=/usr/sbin/gpm <list of parameters>" > $PKG/etc/systemd/system/gpm.service.d/99-user.conf
 
-# Services
-tar xf $SRC/$scripts-$scriptsversion.tar.bz2
-cd $scripts-$scriptsversion
+# service
+cd $SRC/services-scripts
 make DESTDIR=$PKG install-gpm
+
+install -v -dm755 $PKG/etc/systemd/system/gpm.service.d
+echo "ExecStart=/usr/sbin/gpm <list of parameters>" > $PKG/etc/systemd/system/gpm.service.d/99-user.conf
 }

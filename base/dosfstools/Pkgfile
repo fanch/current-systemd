@@ -1,3 +1,4 @@
+# Depends on: systemd
 # Description: DOS filesystem utilities.
 # URL: https://github.com/dosfstools/dosfstools
 # Contributors: Pierre B

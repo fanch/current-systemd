@@ -1,0 +1,23 @@
+# Depends on:  glib help2man libgudev 
+
+description="MBIM modem protocol helper library"
+url="http://www.freedesktop.org/wiki/Software/libmbim/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libmbim
+version=1.16.2
+release=1
+source=()
+
+build() {
+git clone git://anongit.freedesktop.org/libmbim/libmbim
+    cd $name
+     ./autogen.sh --prefix=/usr \
+                --sysconfdir=/etc \
+                --mandir=/usr/share/man \
+                --localstatedir=/var
+    make
+    make DESTDIR=$PKG install
+
+}

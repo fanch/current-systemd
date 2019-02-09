@@ -4,16 +4,13 @@
 # Depends on: python 
  
 name=libxml2
-version=2.9.8
+version=2.9.9
 release=1
 
-source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz
-		libxml2-2.9.8-python3_hack-1.patch)
+source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../libxml2-2.9.8-python3_hack-1.patch
-sed -i '/_PyVerify_fd/,+1d' python/types.c
 ./configure --prefix=/usr    \
             --disable-static \
             --with-history   \

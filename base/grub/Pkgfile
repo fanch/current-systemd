@@ -1,9 +1,7 @@
-# Description: The GRUB package contains the GRand Unified Bootloader.
-# URL: http://www.gnu.org/software/grub/
-# Packager: tnut <tnut@nutyx.org>
-# Contributors:Pierre B
-
-PKGMK_GROUPS=(man locale)
+description="The GRUB package contains the GRand Unified Bootloader."
+url="http://www.gnu.org/software/grub/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=grub
 version=2.02
@@ -11,9 +9,10 @@ release=1
 source=(http://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
 	grub.cfg)
 
+PKGMK_GROUPS=(man locale)
+
 build() {
 	cd grub-$version
-
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
@@ -26,6 +25,4 @@ build() {
         install -d $PKG/boot/grub
 	install -Dm644 ../grub.cfg \
 	$PKG/boot/grub/grub.cfg.exemple
-
-	rm -rf $PKG/usr/share/info
 }

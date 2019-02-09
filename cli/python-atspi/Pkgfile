@@ -1,0 +1,31 @@
+# Depends on:  python2 python-gobject 
+# at-spi2-core 
+
+description="contains the bindings Python2 and Python3 for the components of heart GNOME Accessibility"
+url="http://www.cairographics.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=python-atspi
+version=2.30.0
+release=2
+
+source=(http://ftp.gnome.org/pub/gnome/sources/pyatspi/${version%.*}/pyatspi-$version.tar.xz)
+
+build() {
+cd pyatspi-$version
+mkdir python2
+pushd python2
+../configure --prefix=/usr \
+--with-python=/usr/bin/python2
+make
+popd
+make DESTDIR=$PKG -C python2 install
+mkdir python3
+pushd python3
+../configure --prefix=/usr \
+--with-python=/usr/bin/python3
+make
+popd
+make DESTDIR=$PKG -C python3 install
+}

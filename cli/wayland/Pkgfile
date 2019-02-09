@@ -1,0 +1,22 @@
+# Depends on: libffi doxygen xmlto docbook-xml libxslt
+
+description="A computer display server protocol"
+url="http://wayland.freedesktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Greg"
+
+name=wayland
+version=1.16.0
+release=1
+
+source=(http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr    \
+              --disable-static \
+              --disable-documentation
+  make
+  make DESTDIR=$PKG install
+  rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
+}

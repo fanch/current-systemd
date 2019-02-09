@@ -1,0 +1,22 @@
+# Depends on: python 
+
+description="XCB X protocol descriptions"
+url="http://xcb.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Greg"
+
+PKGMK_GROUPS=()
+
+name=xcb-proto
+version=1.13
+_name=$name
+release=1
+
+source=(http://xcb.freedesktop.org/dist/xcb-proto-$version.tar.bz2)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}

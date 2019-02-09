@@ -1,0 +1,23 @@
+# Depends on: glib libxml2 gobject-introspection gtk3 liboauth libsoup totem-pl-parser vala
+
+description="Framework focused on making media discovery and browsing easy for application developers."
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="fanch at nutyx dot org, tnut at nutyx dot org"
+
+name=grilo
+version=0.3.7
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build 
+cd build    
+meson --prefix=/usr \
+      --libexecdir=/usr/lib .. 
+ninja
+DESTDIR=$PKG ninja install
+}
+

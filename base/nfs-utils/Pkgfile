@@ -6,14 +6,12 @@
 name=nfs-utils
 version=2.2.1
 release=2
-source=(http://downloads.sourceforge.net/nfs/$name-$version.tar.bz2)
+source=(http://downloads.sourceforge.net/nfs/$name-$version.tar.bz2
+	services-scripts.tar.xz)
 
 run=(rpcbind)
 
 build() {
-# build package
-source /etc/blfs-systemd-units
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
  
 cd $name-$version
 sed -i '/fcntl.h/a#include <stdint.h>' support/nsm/rpc.c
@@ -31,9 +29,8 @@ make DESTDIR=$PKG install
 chmod u+w,go+r $PKG/sbin/mount.nfs
 chown nobody.nogroup $PKG/var/lib/nfs
 
-# Services
-tar xf $SRC/$scripts-$scriptsversion.tar.bz2
-cd $scripts-$scriptsversion
+# service
+cd $SRC/services-scripts
 make DESTDIR=$PKG install-nfsv4-server
 make DESTDIR=$PKG install-nfs-server
 }

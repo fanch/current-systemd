@@ -1,0 +1,18 @@
+# Depends on: libxml2 intltool glib
+
+description="The Shared Mime Info package contains a MIME database."
+url="http://freedesktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=shared-mime-info
+version=1.10
+release=2
+source=(http://freedesktop.org/~hadess/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr 
+make -j1
+make DESTDIR=$PKG install
+} 

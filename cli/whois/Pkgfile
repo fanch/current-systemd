@@ -1,0 +1,20 @@
+# Description: Client-side application which queries directory service
+# URL: URL: http://ftp.debian.org/debian/pool/main/w/whois
+# Packager: fanch at nutyx dot org
+# Depends on: 
+
+name=whois
+version=5.4.0
+release=1
+source=(http://ftp.debian.org/debian/pool/main/w/$name/$name\_$version.tar.xz)
+
+build() {
+    cd $name-$version
+    make \
+		CONFIG_FILE=/etc/whois.conf \
+		CFLAGS="$CFLAGS $CPPFLAGS" \
+		HAVE_ICONV=1
+    make prefix=/usr BASEDIR=$PKG install-whois 
+   	install -D -m644 whois.conf $PKG/etc/whois.conf
+	
+}

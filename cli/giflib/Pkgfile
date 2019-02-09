@@ -1,0 +1,21 @@
+# Depends on: xmlto 
+
+description="A garbage collector for C and C++"
+url="http://downloads.sourceforge.net/giflib/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=giflib
+version=5.1.4
+release=1
+
+source=(http://downloads.sourceforge.net/giflib/giflib-$version.tar.bz2 )
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-static
+make
+make DESTDIR=$PKG install
+install -v -dm755 $PKG/usr/share/doc/giflib-$version/html
+install -v -m644 doc/*.html \
+$PKG/usr/share/doc/giflib-$version/html
+}

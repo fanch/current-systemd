@@ -3,11 +3,11 @@
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
 
 
-_amalgamationver=3250200
+_amalgamationver=3260000
 
 name=sqlite
-version=3.25.2
-release=2
+version=3.26.0
+release=1
 
 source=(http://www.sqlite.org/2018/sqlite-autoconf-${_amalgamationver}.tar.gz
 	http://www.sqlite.org/2018/sqlite-doc-${_amalgamationver}.zip )

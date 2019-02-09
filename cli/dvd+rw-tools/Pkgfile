@@ -1,0 +1,22 @@
+# Description: DVD+-RW/R tools
+# URL: http://fy.chalmers.se/~appro/linux/DVD+RW/
+# Packager: pierre at nutyx dot org
+# Depends on: cdrtools
+
+name=dvd+rw-tools
+version=7.1
+release=5
+
+
+source=(http://fy.chalmers.se/~appro/linux/DVD+RW/tools/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+sed -i '/stat.h/a #include <sys/sysmacros.h>/' growisofs.c 
+sed -i '/stdlib/a #include <limits.h>' transport.hxx 
+make all rpl8 btcflash
+make prefix=$PKG/usr install 
+install -v -m644 -D index.html \
+    /usr/share/doc/dvd+rw-tools-7.1/index.html
+rm -r $PKG/usr/bin/btcflash
+}

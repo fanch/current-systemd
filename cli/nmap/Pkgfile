@@ -1,0 +1,18 @@
+# Depends on: pcre libpcap liblinear
+
+description="Utility for network discovery and security auditing"
+url="http://insecure.org/nmap/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=nmap
+version=7.70
+release=1
+source=(http://nmap.org/dist/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --with-liblua=included
+make 
+make DESTDIR=$PKG install
+}

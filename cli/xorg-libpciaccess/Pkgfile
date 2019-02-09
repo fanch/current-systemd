@@ -1,0 +1,20 @@
+# Depends on:
+
+description="library libpciaccess for access generic PCI"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+ 
+name=xorg-libpciaccess
+_name=libpciaccess
+version=0.14
+release=2
+
+source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
+
+build() {
+cd libpciaccess-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/${_name}.la
+}

@@ -1,0 +1,46 @@
+# Depends on: nss cmake xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 lcms2 gobject-introspection gtk3 openjpeg2
+
+description="PDF rendering library based on xpdf 3.0"
+url="http://poppler.freedesktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, Pierre B., Fanch"
+
+dataversion=0.4.9
+name=poppler
+version=0.72.0
+release=1
+
+source=(http://poppler.freedesktop.org/$name-$version.tar.xz
+		http://poppler.freedesktop.org/poppler-data-$dataversion.tar.gz)
+
+build() {
+cd poppler-$version
+mkdir build
+cd    build
+
+cmake   -DCMAKE_BUILD_TYPE=Release   \
+	-DCMAKE_INSTALL_PREFIX=/usr  \
+	-DTESTDATADIR=$PWD/testfiles \
+	-DENABLE_XPDF_HEADERS=ON      \
+	..
+
+make
+make DESTDIR=$PKG install
+
+cd ../../poppler-data-$dataversion
+make prefix=/usr DESTDIR=$PKG install
+
+rm -f $PKG/usr/lib/pkgconfig/poppler-{glib,qt4,qt}.pc
+rm -f $PKG/usr/lib/poppler-{glib*,qt4*,qt*}
+rm -f $PKG/usr/lib/libpoppler-{glib*,qt4*,qt*}
+
+rm -f $PKG/usr/bin/poppler-glib-demo
+rm -rf $PKG/usr/include/poppler/glib/
+
+rm -f $PKG/usr/bin/poppler-qt4-demo
+rm -rf $PKG/usr/include/poppler/qt4/
+
+rm -f $PKG/usr/bin/poppler-qt-demo
+rm -rf $PKG/usr/include/poppler/qt/
+
+}

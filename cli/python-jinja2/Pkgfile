@@ -1,0 +1,17 @@
+# Description: Full featured template engine.
+# URL: http://jinja.pocoo.org/
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: python-markupsafe python-setuptools
+ 
+name=python-jinja2
+version=2.10
+release=1
+
+source=(https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-${version}.tar.gz)
+
+build() {
+    cd Jinja2-$version
+    python3 setup.py install --prefix=/usr --root=$PKG
+}
+

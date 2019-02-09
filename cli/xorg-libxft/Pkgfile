@@ -1,0 +1,21 @@
+# Depends on: xorg-libxrender freetype xorg-fontconfig 
+
+description="libXft, library X are rendering client"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxft
+version=2.3.2
+release=2
+_name=libXft
+
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/${_name}.la
+}
+

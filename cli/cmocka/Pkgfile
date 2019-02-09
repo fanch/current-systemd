@@ -1,0 +1,33 @@
+# Depends on: glibc cmake
+
+description="Elegant unit testing framework for C with support for mock objects"
+url="https://cmocka.org/"
+packager="fanch <fanch@nutyx.org>"
+contributors=""
+
+name=cmocka
+version=1.1.1
+release=3
+
+source=(https://cmocka.org/files/1.1/$name-$version.tar.xz)
+
+build () {
+	cd ${name}-${version}
+	mkdir build
+	cd build
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DUNIT_TESTING=ON
+	make
+	make test
+	make install DESTDIR=$PKG
+}
+
+
+
+
+
+ 
+ 
+ 

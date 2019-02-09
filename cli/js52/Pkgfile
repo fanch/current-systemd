@@ -1,0 +1,30 @@
+# Depends on: autoconf2-13 icu libatomic-ops python2 nspr yasm
+#autoconf2-13 icu libffi mercurial nspr python2 yasm zip
+
+description="JS is Mozilla's JavaScript engine written in C."
+url="https://people.mozilla.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=js52
+version=52.2.1
+release=1
+source=(http://ftp.gnome.org/pub/gnome/teams/releng/tarballs-needing-help/mozjs/mozjs-52.2.1gnome1.tar.gz)
+
+build() {
+  cd mozjs-52.2.1gnome1
+  cd js/src
+  export SHELL=/bin/bash
+  ./configure --prefix=/usr       \
+              --with-intl-api     \
+              --with-system-zlib  \
+              --with-system-nspr  \
+              --with-system-icu   \
+              --enable-threadsafe \
+              --enable-readline
+  make
+  make DESTDIR=$PKG install
+
+  # Already present on js38
+    rm $PKG/usr/lib/libjs_static.ajs
+}
+

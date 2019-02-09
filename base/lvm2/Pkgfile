@@ -4,7 +4,7 @@
 # Packager: tnut <tnut@nutyx.org>
 
 name=lvm2
-version=2.02.177
+version=2.03.02
 release=1
 source=(ftp://sources.redhat.com/pub/lvm2/LVM2.$version.tgz)
 

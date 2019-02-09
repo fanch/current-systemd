@@ -7,9 +7,9 @@ PKGMK_GROUPS=(man)
 PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 name=nutyx
-version=9.1
+version=9.0
 release=1
-source=(http://downloads.nutyx.org/files/$name-$version.tar.xz)
+source=(nutyx-9.0.tar.gz)
 
 build () {
 cd $name-$version

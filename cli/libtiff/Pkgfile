@@ -1,0 +1,21 @@
+# Description: Library for manipulation of TIFF images
+# URL: http://www.remotesensing.org/libtiff/
+# Packager: pierre at nutyx dot org
+# Depends on: libjpeg-turbo cmake
+
+name=libtiff
+version=4.0.10
+release=1
+
+source=(http://download.osgeo.org/libtiff/tiff-$version.tar.gz)
+
+build() {
+cd tiff-$version
+mkdir -p libtiff-build 
+cd       libtiff-build 
+cmake -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/libtiff-4.0.10 \
+      -DCMAKE_INSTALL_PREFIX=/usr -G Ninja .. 
+ninja
+DESTDIR=$PKG ninja install
+}
+

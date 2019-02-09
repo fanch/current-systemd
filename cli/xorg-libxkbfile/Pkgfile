@@ -1,0 +1,22 @@
+# Depends on: xorgproto xorg-libx11 
+
+description="xorg lib xorg - libxkbfile"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxkbfile
+version=1.0.9
+release=3
+
+_name=libxkbfile
+
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/${_name}.la
+}
+

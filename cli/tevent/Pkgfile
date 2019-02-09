@@ -1,0 +1,20 @@
+# Description: Event system based on the talloc memory management library
+# URL: https://tevent.samba.org
+# Packager: tnut at nutyx dot org
+# Depends on: talloc python
+
+name=tevent
+version=0.9.37
+release=1
+source=(https://www.samba.org/ftp/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" buildtools/bin/waf
+	export PYTHON=/usr/bin/python2
+./configure --prefix=/usr \
+--bundled-libraries=NONE \
+--builtin-libraries=replace
+make
+make DESTDIR=$PKG install
+}

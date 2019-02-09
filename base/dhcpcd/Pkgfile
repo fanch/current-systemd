@@ -6,26 +6,18 @@
 name=dhcpcd
 version=7.0.8
 release=1
-source=(http://roy.marples.name/downloads/$name/$name-$version.tar.xz)
+source=(http://roy.marples.name/downloads/$name/$name-$version.tar.xz services-scripts.tar.xz)
 
 build() {
-# build package
-source /etc/blfs-systemd-units
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
- 
 cd $name-$version
 
 ./configure --prefix= \
 --libexecdir=/lib/dhcpcd \
---dbdir=/var/tmp
+--dbdir=/var/lib/dhcpcd
 make
 make DESTDIR=$PKG install
 
-# Encore un mechant bug
-rm -r $PKG/var/tmp
-
-# Services
-tar xf $SRC/$scripts-$scriptsversion.tar.bz2
-cd $scripts-$scriptsversion
+# service
+cd $SRC/services-scripts
 make DESTDIR=$PKG install-dhcpcd
 }

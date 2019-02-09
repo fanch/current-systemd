@@ -1,0 +1,22 @@
+# Depends on: dconf dbus gtk3 libxml2 libxslt meson ninja vala 
+
+description="A graphical editor for the DConf database"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Fanch, Tnut, jayce"
+
+name=dconf-editor
+version=3.30.2
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr --sysconfdir=/etc -Dbash_completion=false ..
+ninja
+DESTDIR=$PKG ninja install
+}
+

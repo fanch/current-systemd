@@ -1,0 +1,21 @@
+# Depends on: meson ninja gnome-online-accounts gsettings-desktop-schemas desktop-file-utils python-gobject gtk-update-icon-cache gobject-introspection grilo grilo-plugins gtk3 intltool itstool libmediaart python python2 tracker libdazzle 
+
+description="Music player and management application"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+run=(intltool itstool python gobject-introspection gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=gnome-music
+version=3.30.2
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+ 
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr 
+ninja     
+DESTDIR=$PKG ninja install
+}

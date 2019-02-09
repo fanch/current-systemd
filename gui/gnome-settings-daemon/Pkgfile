@@ -1,0 +1,21 @@
+# Depends on: geoclue2 geocode-glib libgweather librsvg meson networkmanager ninja nss intltool cups colord gnome-desktop libcanberra libnotify libgnomekbd libwacom pulseaudio upower gsettings-desktop-schemas gtk-update-icon-cache xorg-libxtst
+
+description="The GNOME Settings daemon"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Fanch, Tnut, jayce"
+run=(gtk-update-icon-cache gsettings-desktop-schemas)
+
+name=gnome-settings-daemon
+version=3.30.2
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/3.30/$name-$version.tar.xz)
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr --sysconfdir=/etc ..  
+ninja
+DESTDIR=$PKG ninja install
+}

@@ -1,7 +1,5 @@
-version=2.28
-source=(\
-http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz
-)
+version=2.29
+source=(http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz)
 
 build()
 {

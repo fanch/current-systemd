@@ -1,0 +1,18 @@
+# Description: Public Suffix List library.
+# URL: https://github.com/rockdaboot/libpsl
+# Packager : "tnut <tnut@nutyx.org>"
+# Depends on: libidn2  python2 
+
+name=libpsl
+version=0.20.2
+release=3
+source=(https://github.com/rockdaboot/$name/releases/download/$name-$version/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure \
+    --prefix=/usr \
+    --disable-static 
+	make 
+	make DESTDIR=$PKG install
+}

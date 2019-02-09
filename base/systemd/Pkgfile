@@ -1,34 +1,33 @@
-# Depends on: intltool perl-xml-parser dbus polkit ca-certificates elfutils gnutls iptables libgcrypt libidn libxkbcommon python3 valgrind meson
+# Depends on: meson ninja
 
-description="system and service manager"
-url="http://www.freedesktop.org/wiki/Software/systemd"
-
-packager="tnut at nutyx dot org"
+description="Init system to control boot, execution and halt of a linux system"
+url="http://www.freedesktop.org/wiki/Software/systemd/"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
-version=239
-release=1
+version=240
+release=4
 
-PKGMK_GROUPS=(devel doc man lib)
-#PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/systemd/systemd/archive/v$version/$name-$version.tar.gz
-		systemd-239-glibc_statx_fix-1.patch
-		systemd-239-meson-0.48.0_fixes-1.patch)
+source=(https://github.com/systemd/systemd/archive/v$version.tar.gz
+        systemd-240-security_fixes-1.patch)
 
-build() {
+build () {
 cd $name-$version
-
-sed '166,$ d' -i src/resolve/meson.build
-
-patch -Np1 -i ../systemd-239-glibc_statx_fix-1.patch
-patch -Np1 -i ../systemd-239-meson-0.48.0_fixes-1.patch
-
+patch -Np1 -i ../systemd-240-security_fixes-1.patch
+[ -d /tools ] && ln -sf /tools/bin/true /usr/bin/xsltproc
+# sed '165,$ d' -i src/resolve/meson.build
 sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 
-mkdir -p build 
-cd    build 
+for file in /tools/lib/lib{blkid,mount,uuid}*; do
+    ln -sf $file /usr/lib/
+done
 
-LANG=en_US.UTF-8		   \
+mkdir -p build
+cd       build
+
+PKG_CONFIG_PATH="/usr/lib/pkgconfig:/tools/lib/pkgconfig" \
+LANG="en_US.UTF-8"                  \
 meson --prefix=/usr                \
       --sysconfdir=/etc            \
       --localstatedir=/var         \
@@ -48,28 +47,48 @@ meson --prefix=/usr                \
       -Dsysusers=false             \
       -Dumount-path=/bin/umount    \
       -Db_lto=false                \
+      -Dman=false                  \
       ..
 
 LANG=en_US.UTF-8 ninja
-
-DESTDIR=$PKG LANG=en_US.UTF-8 ninja install
-
+DESTDIR=$PKG LANG="en_US.UTF-8" ninja install
 rm -rfv $PKG/usr/lib/rpm
-
-for tool in runlevel reboot shutdown poweroff halt telinit; do
-     ln -sfv ../bin/systemctl $PKG/sbin/${tool}
-done
-ln -sfv ../lib/systemd/systemd $PKG/sbin/init
+rm -f /usr/bin/xsltproc
 
 cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
 #!/bin/bash
 rm -f /run/nologin
 EOF
+
 chmod 755 $PKG/lib/systemd/systemd-user-sessions
 
-cat >> $PKG/etc/machine-id << "EOF"
+rm $PKG/usr/lib/tmpfiles.d/home.conf
+
+cat >> $PKG/etc/pam.d/system-session << "EOF"
 # Begin Systemd addition
-systemd-machine-id-setup
+    
+session  required    pam_loginuid.so
+session  optional    pam_systemd.so
+
 # End Systemd addition
+EOF
+
+cat > $PKG/etc/pam.d/systemd-user << "EOF"
+# Begin /etc/pam.d/systemd-user
+
+account  required pam_access.so
+account  include  system-account
+
+session  required pam_env.so
+session  required pam_limits.so
+session  required pam_unix.so
+session  required pam_loginuid.so
+session  optional pam_keyinit.so force revoke
+session  optional systemd.so
+
+auth     required pam_deny.so
+password required pam_deny.so
+
+# End /etc/pam.d/systemd-user
 EOF
 }

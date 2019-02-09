@@ -1,0 +1,18 @@
+# Description: The libgusb package contains the GObject wrappers for libusb-1.0
+# URL: https://gitorious.org/gusb/
+# Packager: pierre at nutyx dot org
+# Depends on: libusb gperf glib gobject-introspection gtk-doc libgudev meson vala python-six
+
+name=libgusb
+version=0.3.0
+release=2
+source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+meson build \
+		--prefix /usr \
+		 -Ddocs=false  
+ninja -C build -j1
+DESTDIR=$PKG ninja -C build install
+}

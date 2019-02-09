@@ -1,0 +1,19 @@
+# Description: Core utilities for Python packages.
+# URL: https://github.com/pypa/packaging
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: python2
+
+name=python-packaging
+version=18.0
+release=1
+
+source=(https://pypi.io/packages/source/p/packaging/packaging-$version.tar.gz)
+
+build() {
+    cd packaging-$version
+    python2 setup.py build
+    python2 setup.py install --prefix=/usr --root=$PKG
+    python3 setup.py build
+    python3 setup.py install --prefix=/usr --root=$PKG
+}

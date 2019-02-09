@@ -1,0 +1,37 @@
+# Depends on: libelf llvm python-mako xorg-xrandr xorgproto xorg-libdrm xorg-libx11 xorg-libxext xorg-libxdamage wayland-protocols xorg-libxshmfence xorg-libxxf86vm
+
+description="Mesa is an OpenGL compatible 3D graphics library."
+url="http://www.xorg-mesa3d.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
+
+name=mesa
+version=18.3.1
+release=1
+source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
+		mesa-$version-add_xdemos-1.patch)
+build() {
+cd mesa-$version
+patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
+GLL_DRV="nouveau,i915,radeonsi,svga,swrast"
+./configure CFLAGS='-O2' CXXFLAGS='-O2' LDFLAGS=-lLLVM \
+--prefix=/usr                  \
+--sysconfdir=/etc              \
+--enable-osmesa                \
+--enable-xa                    \
+--enable-glx-tls               \
+--with-platforms="drm,x11,wayland" \
+--with-gallium-drivers=$GLL_DRV    
+unset GLL_DRV 
+make
+make -C xdemos DEMOS_PREFIX=/usr
+
+make DESTDIR=$PKG install
+
+make -C xdemos DEMOS_PREFIX=/usr DESTDIR=$PKG install
+
+install -v -dm755 $PKG/usr/share/doc/mesa-$version
+
+cp -rfv docs/* $PKG/usr/share/doc/mesa-$version
+}

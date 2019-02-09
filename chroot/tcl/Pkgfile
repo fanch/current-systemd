@@ -1,4 +1,4 @@
-version=8.6.8
+version=8.6.9
 source=(https://downloads.sourceforge.net/tcl/tcl${version}-src.tar.gz)
 
 build()

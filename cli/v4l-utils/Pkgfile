@@ -1,0 +1,19 @@
+# Description: Userspace tools and conversion library for Video 4 Linux
+# URL: http://freshmeat.net/projects/libv4l
+# Packager: pierre at nutyx dot org
+# Depends on: libjpeg-turbo 
+
+name=v4l-utils
+version=1.14.2
+release=1
+
+source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2
+		v4l-utils-1.14.2-fix_sysmacros-1.patch )
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ../v4l-utils-1.14.2-fix_sysmacros-1.patch 
+	./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin
+	make
+	make -j1 install DESTDIR=$PKG
+}

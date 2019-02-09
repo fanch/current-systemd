@@ -1,0 +1,19 @@
+# Description: Library to read and write AppStream metadata.
+# URL: http://people.freedesktop.org/~hughsient/appstream-glib/
+# Packager: "fanch <fanch@nutyx.com>"
+# Contributors: Fanch, Tnut
+# Depends on: autoconf-archive gdk-pixbuf json-glib libarchive libsoup meson pango gcab gobject-introspection gtk3 yaml
+
+name=appstream-glib
+version=0.7.14
+release=1
+source=(http://people.freedesktop.org/~hughsient/$name/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr -Dgtk-doc=false -Drpm=false -Dstemmer=false 
+ninja
+DESTDIR=$PKG ninja install
+}

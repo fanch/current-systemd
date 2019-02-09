@@ -3,7 +3,7 @@ url="https://sourceware.org/ftp/elfutils"
 packager="tnut <tnut@nutyx.org>"
 
 name=libelf
-version=0.174
+version=0.175
 release=1
 
 source=(https://sourceware.org/ftp/elfutils/0.174/elfutils-$version.tar.bz2)

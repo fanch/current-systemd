@@ -1,0 +1,28 @@
+# Depends on: glib cairo icu freetype gobject-introspection 
+
+
+description="OpenType text shaping engine"
+url="http://www.freedesktop.org/software/harfbuzz"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Remy, Tnut"
+
+name=harfbuzz
+version=2.2.0
+release=1
+
+source=(https://www.freedesktop.org/software/$name/release/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+
+./configure --prefix=/usr \
+            --with-cairo  \
+            --with-freetype \
+            --with-glib   \
+            --with-gobject \
+            --with-icu \
+            --disable-gtk-doc
+
+make
+make DESTDIR=$PKG install
+}

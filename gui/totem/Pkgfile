@@ -1,0 +1,21 @@
+# Depends on: appstream-glib meson ninja lirc gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache grilo libpeas gnome-icon-theme iso-codes gnome-doc-utils python2-xdg clutter-gst clutter-gtk xorg-libsm libpeas python-gobject libgdata gstreamer-plugins-good gstreamer-plugins-bad totem-pl-parser nautilus python-pylint
+
+description="GNOME3 movie player based on GStreamer"
+url="http://www.gnome.org/projects/totem/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut, jayce"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=totem
+version=3.26.2
+release=2
+source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build 
+cd build 
+meson --prefix=/usr -Denable-gtk-doc=true -Denable-vala=no -Db_lto=false
+ninja
+DESTDIR=$PKG ninja install
+}

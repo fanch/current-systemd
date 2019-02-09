@@ -4,7 +4,7 @@
 # Contributors: Pierre B
 
 name=keyutils
-version=1.5.10
+version=1.6
 release=1
 source=( http://people.redhat.com/~dhowells/$name/$name-$version.tar.bz2 
 request-key.conf.patch)
@@ -13,6 +13,6 @@ build() {
 	unset MAKEFLAGS
         cd $name-$version
 		patch -Np0 -i $SRC/request-key.conf.patch
-        make
-        make DESTDIR=$PKG install
+        make CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" SBINDIR='/usr/bin' BINDIR='/usr/bin'
+        make DESTDIR=$PKG SBINDIR='/usr/bin' BINDIR='/usr/bin' LIBDIR='/usr/lib' USRLIBDIR='/usr/lib' install
 }

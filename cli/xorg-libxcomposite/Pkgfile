@@ -1,0 +1,20 @@
+# Depends on: xorgproto xorg-libx11 xorg-libxfixes xorg-libxext 
+
+description="libXcomposite, library Composite extension client"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxcomposite
+version=0.4.4
+release=2
+
+_name=libXcomposite
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+}
+

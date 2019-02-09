@@ -1,0 +1,23 @@
+# Description: Accessing the list of user accounts and information attached to those accounts. 
+# URL: http://www.freedesktop.org/wiki/Software/AccountsService/
+# Packager: "fanch <fanch@nutyx.com>"
+# Contributors: Pierre
+# Depends on: xmlto libxslt polkit gobject-introspection vala
+
+name=accountsservice
+version=0.6.54
+release=1
+source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr            \
+            -Dadmin_group=adm  \
+            -Dsystemd=true     \
+            ..
+ninja
+DESTDIR=$PKG ninja install
+mkdir -p $PKG/var/{lib,run}/polkit-1
+}

@@ -1,0 +1,16 @@
+# Description: Sphinx API for Web Apps.
+# URL: http://sphinx-doc.org/
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: python-setuptools
+ 
+name=python-sphinxcontrib-websupport
+version=1.1.0
+release=1
+source=(https://files.pythonhosted.org/packages/source/s/sphinxcontrib-websupport/sphinxcontrib-websupport-${version}.tar.gz)
+
+build() {
+    cd sphinxcontrib-websupport-$version
+    python3 setup.py install --prefix=/usr --root=$PKG
+}
+

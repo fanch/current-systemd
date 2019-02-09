@@ -1,0 +1,23 @@
+# Depends on: xorgproto xorg-libx11
+
+description="libXrender, library X Render extension client"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxrender
+alias=(libXrender)
+version=0.9.10
+release=3
+
+_name=libXrender
+
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/${_name}.la
+}
+

@@ -1,0 +1,25 @@
+# Depends on: intltool xorgproto xorg-libx11
+
+description="X keyboard configuration database"
+url="http://www.freedesktop.org/wiki/Software_2fXKeyboardConfig"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, greg"
+
+_name=xkeyboard-config
+name=xorg-xkeyboard-config
+
+alias=(xkeyboard-config)
+version=2.25
+release=1
+
+source=( http://xorg.freedesktop.org/archive/individual/data/${_name}/${_name}-$version.tar.bz2)
+
+build() {
+
+cd ${_name}-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --with-xkb-rules-symlink=xorg
+
+make
+make DESTDIR=$PKG install
+
+}

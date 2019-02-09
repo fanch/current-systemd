@@ -1,0 +1,21 @@
+# Depends on: libsoup check
+
+description="The Operating System information database"
+url="http://libosinfo.org"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+name=libosinfo
+version=1.2.0
+release=1
+source=(https://releases.pagure.org/$name/$name-$version.tar.gz)
+
+build() {
+ cd $name-$version
+ ./configure --prefix=/usr \
+ 	--disable-nls
+  make
+  make DESTDIR=$PKG install
+
+
+}

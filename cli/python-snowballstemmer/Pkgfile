@@ -1,0 +1,14 @@
+# Description: Snowball stemming library collection for Python.
+# URL: https://github.com/shibukawa/snowball_py
+# Maintainer: Alessio Sergi <al3hex@gmail.com>
+# Depends on: python-setuptools 
+
+name=python-snowballstemmer
+version=1.2.1
+release=1
+source=(https://files.pythonhosted.org/packages/source/s/snowballstemmer/snowballstemmer-${version}.tar.gz)
+build() {
+	cd snowballstemmer-$version
+	/usr/bin/python3 setup.py build
+	/usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+}

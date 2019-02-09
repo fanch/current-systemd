@@ -1,0 +1,33 @@
+# Depends on: talloc tevent tdb popt python2 cmocka lmdb
+
+description="A schema-less, ldap like, API and database"
+url="http://ldb.samba.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=ldb
+version=1.4.3
+release=1
+source=(http://samba.org/ftp/${name}/${name}-${version}.tar.gz)
+
+
+build () {
+	cd $name-$version
+
+	sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+	buildtools/bin/waf
+
+	export PYTHON=/usr/bin/python2
+
+	./configure --prefix=/usr \
+		--disable-rpath \
+		--disable-rpath-install \
+		--bundled-libraries=NONE \
+		--builtin-libraries=replace \
+                --with-modulesdir=/usr/lib/ldb/modules \
+                --with-privatelibdir=/usr/lib/ldb
+
+	make
+
+	make DESTDIR=$PKG/ install
+}

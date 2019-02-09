@@ -1,0 +1,18 @@
+# Description: MPEG-4 library
+# URL: http://code.google.com/p/mp4v2
+# Packager: pierre at nutyx dot org
+
+name=libmp4v2
+version=2.0.0
+release=1
+
+source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mp4v2/mp4v2-$version.tar.bz2
+		libmp4v2-c++11.patch)
+
+build() {
+cd mp4v2-$version
+patch -p0 -i ../libmp4v2-c++11.patch 
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

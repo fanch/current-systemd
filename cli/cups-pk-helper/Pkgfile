@@ -1,0 +1,20 @@
+# Depends on: polkit intltool cups
+
+description="The cups-pk-helper package contains a PolicyKit helper used to configure Cups with fine-grained privileges."
+url="http://www.freedesktop.org/software/cups-pk-helper/releases"
+packager="tnut <tnut@nutyx.org>"
+
+
+name=cups-pk-helper
+version=0.2.6
+release=2
+
+source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc \
+    --libexecdir=/usr/lib/cups-pk-helper
+make
+make DESTDIR=$PKG install
+}

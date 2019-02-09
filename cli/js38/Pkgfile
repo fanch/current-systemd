@@ -1,0 +1,47 @@
+# Depends on: autoconf2-13 icu libffi nspr python2 python-virtualenv zip
+
+description="JS is Mozilla's JavaScript engine written in C."
+url="https://people.mozilla.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=js38
+version=38.2.1
+release=1
+
+source=(http://anduin.linuxfromscratch.org/BLFS/mozjs/mozjs-$version.rc0.tar.bz2
+		js38-$version-upstream_fixes-2.patch)
+
+build() {
+
+  cd mozjs-38.0.0
+
+  patch -Np1 -i ../js38-$version-upstream_fixes-2.patch
+
+  cd js/src
+  export SHELL=/bin/bash
+  autoconf-2.13
+
+  ./configure --prefix=/usr       \
+              --with-intl-api     \
+              --with-system-zlib  \
+              --with-system-ffi   \
+              --with-system-nspr  \
+              --with-system-icu   \
+              --enable-threadsafe \
+              --enable-readline
+
+  make
+
+  make DESTDIR=$PKG install
+	
+  mkdir -p $PKG/usr/include/mozjs-38
+  pushd $PKG/usr/include/mozjs-38
+  for link in `find . -type l`
+  do
+    header=`readlink $link`
+    rm -f $link
+    cp -pv $header $link
+    chmod 644 $link
+  done
+  popd
+}

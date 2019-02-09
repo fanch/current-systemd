@@ -1,0 +1,21 @@
+# Depends on: systemd gtk3 gsettings-desktop-schemas desktop-file-utils
+
+description="A log viewer for the systemd journal."
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Fanch, Tnut"
+
+name=gnome-logs
+version=3.30.0
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr  -D tests=true -D man=true
+ninja     
+DESTDIR=$PKG ninja install
+}

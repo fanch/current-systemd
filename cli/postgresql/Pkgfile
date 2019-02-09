@@ -1,0 +1,36 @@
+# Description: Advanced object-relational database management system (ORDBMS). 
+# URL: http://www.postgresql.org/docs
+# Packagers: pierre at nutyx dot org, tnut at nutyx dot org
+# Depends on: icu python libxml2 libxslt openldap
+
+PKGMK_GROUPS=(lib doc man devel service)
+
+name=postgresql
+version=11.1
+release=1
+
+source=( http://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+
+sed -i '/DEFAULT_PGSOCKET_DIR/s@/tmp@/run/postgresql@' src/include/pg_config_manual.h
+
+./configure --prefix=/usr \
+--mandir=/usr/share/man \
+--with-docdir=/usr/share/doc/$name-$version \
+--enable-thread-safety \
+--with-icu \
+--with-ldap \
+--with-system-tzdata=/usr/share/zoneinfo \
+--with-perl \
+--with-openssl \
+--with-libxml \
+--with-systemd \
+--with-pam
+
+make
+
+make DESTDIR=$PKG install
+make DESTDIR=$PKG install-docs
+}

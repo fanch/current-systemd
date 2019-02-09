@@ -1,0 +1,19 @@
+# Depends on: glib gobject-introspection intltool vala
+
+description="The Gcab package contains a program and a library used to create Microsoft cabinet (.cab) archives."
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+
+name=gcab
+version=0.8
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-static
+  make
+make DESTDIR=$PKG install
+}

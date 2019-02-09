@@ -1,0 +1,33 @@
+# Depends on: meson dbus doxygen ffmpeg glib graphviz gstreamer gstreamer-plugins-base sbc valgrind v4l-utils 
+
+description="Server and user space API to deal with multimedia pipelines"
+url="https://pipewire.org"
+packager="fanch <fanch@nutyx.org>"
+contributors="Fanch, Tnut"
+run=()
+
+name=pipewire
+version=0.2.3
+release=1
+
+source=(pkgconfig.diff)
+
+build() {
+git clone https://github.com/PipeWire/pipewire.git
+cd $name
+git reset --hard 8d53d3018f2d3bccd72bffb901ec36095d430382
+  patch -Np1 -i $SRC/pkgconfig.diff
+  printf '%s\n' >>doc/Doxyfile.in \
+    HAVE_DOT=yes DOT_IMAGE_FORMAT=svg INTERACTIVE_SVG=yes
+  mkdir -p build
+  cd build
+  meson --prefix=/usr  \
+    --sysconfdir=/etc \
+    --libdir  /usr/lib \
+	--libexecdir  /usr/lib \
+    -D docs=true \
+    -D man=true \
+    -D gstreamer=true
+  ninja
+  DESTDIR=$PKG ninja install
+}

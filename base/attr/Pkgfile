@@ -14,16 +14,19 @@ source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
 build() {
 cd $name-$version
 
+INSTALL_USER=root  \
+INSTALL_GROUP=root \
 ./configure --prefix=/usr \
-		--bindir=/bin \
-		--sysconfdir=/etc
+            --disable-static \
+            --sysconfdir=/etc \
+            --docdir=/usr/share/doc/$name-$version \
+            --bindir=/bin
 make
 make DESTDIR=$PKG install
 
 install -d $PKG/lib
 mv $PKG/usr/lib/libattr.so.* $PKG/lib
-rm $PKG/usr/lib/libattr.so
-ln -sf ../../lib/$(readlink $PKG/lib/libattr.so.1) $PKG/usr/lib/libattr.so
+ln -sf ../../lib/$(readlink $PKG/lib/libattr.so) $PKG/usr/lib/libattr.so
 }
 devel () {
 cd $PKG

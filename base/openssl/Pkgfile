@@ -3,7 +3,7 @@
 # Packager: tnut at nutyx dot org
 
 name=openssl
-version=1.1.1
+version=1.1.1a
 release=1
 
 source=(ftp://ftp.openssl.org/source/$name-$version.tar.gz)
@@ -15,9 +15,11 @@ unset MAKEFLAGS
 
 cd $name-$version
 
-./config --prefix=/usr \
-	--openssldir=/etc/ssl \
-	shared zlib-dynamic
+./config --prefix=/usr         \
+         --openssldir=/etc/ssl \
+         --libdir=lib          \
+         shared                \
+         zlib-dynamic
 
 make
 make DESTDIR=$PKG MANDIR=/usr/share/man \

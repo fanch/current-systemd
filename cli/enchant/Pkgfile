@@ -1,0 +1,28 @@
+# Depends on: glib aspell dbus-glib
+
+description="Generic Spell Checking Library."
+url="http://www.abisource.com/enchant/"
+packager="tnut <tnut@nutyx.org>"
+
+name=enchant
+version=2.2.3
+release=1
+source=(https://github.com/AbiWord/$name/releases/download/v$version/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--disable-static
+
+	make
+	make DESTDIR=$PKG install
+
+	rm -rf $PKG/usr/include/enchant
+	ln -sfv enchant-2 $PKG/usr/include/enchant
+	ln -sfv enchant-2 $PKG/usr/bin/enchant
+	ln -sfv libenchant-2.so $PKG/usr/lib/libenchant.so
+	ln -sfv enchant-2.pc $PKG/usr/lib/pkgconfig/enchant.pc
+}

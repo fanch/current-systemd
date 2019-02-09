@@ -11,14 +11,21 @@ source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
 build() {
 cd gmp-$version
+cp -v configfsf.guess config.guess
+cp -v configfsf.sub   config.sub
 
 case `uname -m` in
  i?86)
-	ABI=32 ./configure --build=i686-pc-linux-gnu \
-	--prefix=/usr --enable-cxx --libdir=/lib ;;
+	ABI=32 ./configure \
+	--prefix=/usr \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
  *)
-	./configure --build=x86_64-unknown-linux-gnu \
-	--prefix=/usr --enable-cxx --libdir=/lib ;;
+	./configure \
+	--prefix=/usr \
+	--build=x86_64-unknown-linux-gnu \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
 esac
 make
 make html

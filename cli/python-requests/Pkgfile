@@ -1,0 +1,20 @@
+# Description: Python HTTP for Humans.
+# URL: http://python-requests.org/
+# Maintainer: Danny Rawlins, crux at romster dot me
+# Depends on: python-chardet python-idna python-urllib3
+
+name=python-requests
+version=2.20.1
+release=1
+source=(https://files.pythonhosted.org/packages/40/35/298c36d839547b50822985a2cf0611b3b978a5ab7a5af5562b8ebe3e1369/requests-2.20.1.tar.gz
+certs.patch)
+
+build() {
+	cd ${name#*-}-$version
+
+	sed -e '/certifi/d' -i setup.py
+	patch -p1 -i $SRC/certs.patch
+
+	/usr/bin/python3 setup.py build
+	/usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+}

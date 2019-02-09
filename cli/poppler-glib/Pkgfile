@@ -1,0 +1,38 @@
+# Depends on: nss poppler xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 openjpeg2 lcms lcms2 glib gobject-introspection gtk3
+
+description="PDF rendering library based on xpdf 3.0"
+url="URL: http://poppler.freedesktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+name=poppler-glib
+version=0.72.0
+release=1
+
+source=(http://poppler.freedesktop.org/poppler-$version.tar.xz)
+
+build() {
+cd poppler-$version
+
+mkdir build
+cd    build
+
+cmake   -DCMAKE_BUILD_TYPE=Release   \
+	-DCMAKE_INSTALL_PREFIX=/usr  \
+	-DTESTDATADIR=$PWD/testfiles \
+	-DENABLE_XPDF_HEADERS=ON    \
+	-DENABLE_POPPLER_QT4=OFF     \
+    -DENABLE_POPPLER_GLIB=ON     \
+	-DENABLE_GTK_DOC=OFF         \
+	..
+
+make
+make -C glib DESTDIR=$PKG install
+install -m755 -d $PKG/usr/lib/pkgconfig
+install -m644 poppler-glib.pc $PKG/usr/lib/pkgconfig/
+
+# Already in poppler
+rm -f $PKG/usr/lib/libpoppler.*
+rm $PKG/usr/lib/girepository-1.0/Poppler-0.18.typelib
+rm $PKG/usr/share/gir-1.0/Poppler-0.18.gir
+}

@@ -3,8 +3,8 @@
 # Packager: tnut <tnut@nutyx.org>
 
 name=elfutils
-version=0.174
-release=2
+version=0.175
+release=1
 source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2)
 
 build() {
@@ -20,7 +20,7 @@ $PKG/usr/include/gelf.h \
 $PKG/usr/include/libelf.h \
 $PKG/usr/include/nlist.h \
 $PKG/usr/lib/pkgconfig/libelf.pc \
-$PKG/usr/lib/libelf-0.174.so \
+$PKG/usr/lib/libelf-0.175.so \
 $PKG/usr/lib/libelf.a \
 $PKG/usr/lib/libelf.so \
 $PKG/usr/lib/libelf.so.1

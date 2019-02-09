@@ -1,0 +1,21 @@
+# Depends on: meson gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache  clutter-gtk geoclue2 geocode-glib gjs libchamplain libgee folks gfbgraph
+
+description="GNOME Maps is a map application for GNOME"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors=" Tnut, jayce"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=gnome-maps
+version=3.30.3
+release=1
+source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr ..
+ninja
+DESTDIR=$PKG ninja install
+}

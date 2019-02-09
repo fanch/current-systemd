@@ -1,0 +1,24 @@
+# Depends on: geoip-database
+
+description="Non-DNS IP-to-country resolver C library & utils."
+url="http://www.maxmind.com/app/c"
+packager="tnut <tnut@nutyx.org>"
+
+name=geoip
+version=1.6.12
+release=1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/maxmind/${name}-api-c/archive/v${version}.tar.gz)
+
+build() {
+	cd geoip-api-c-$version
+	./bootstrap
+	./configure \
+		--sysconfdir=/etc/geoip \
+		--prefix=/usr \
+		--mandir=/usr/man
+	make
+	make DESTDIR=$PKG install
+}

@@ -1,0 +1,18 @@
+description="GeoLite country geolocation database compiled by MaxMind"
+url="http://www.maxmind.com/app/c"
+packager="tnut <tnut@nutyx.org>"
+
+name=geoip-database
+version=20180403
+release=1
+
+source=(https://mirrors-cdn.liferay.com/geolite.maxmind.com/download/geoip/database/GeoIP.dat.gz
+		https://mirrors-cdn.liferay.com/geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz)
+
+build() {
+	umask 022
+	install -d $PKG/usr/share/GeoIP
+	for i in GeoIP.dat GeoIPv6.dat; do
+		gzip -dc $i.gz > $PKG/usr/share/GeoIP/$i
+	done
+}

@@ -1,0 +1,6 @@
+. lib/lsb/init-functions
+if [ ! -f etc/named.conf ]; then
+	cp etc/named.conf{.example,}
+      log_success_msg "${WARNING} /etc/named.conf created ${NORMAL}"
+      log_warning_msg "${WARNING} Double check /etc/named.conf and adapted to your needs ${NORMAL}"
+fi

@@ -1,0 +1,23 @@
+# Depends on: xorgproto xorg-libx11 xorg-libxext 
+
+description="libXres, resource extension client library"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxres
+version=1.2.0
+release=3
+
+_name=libXres
+
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libXRes.la
+}
+
+

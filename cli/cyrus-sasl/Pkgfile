@@ -1,0 +1,33 @@
+# Description: Cyrus saslauthd SASL authentication daemon
+# URL: http://cyrusimap.org/
+# Packager: pierre at nutyx dot org
+# Depends on: db postgresql
+
+name=cyrus-sasl
+version=2.1.27
+release=1
+
+source=(https://fossies.org/linux/misc/$name-$version.tar.gz
+	saslauthd saslauthd.service saslauthd.conf)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --enable-auth-sasldb \
+            --with-dbpath=/var/lib/sasl/sasldb2 \
+            --with-saslauthd=/var/run/saslauthd  
+make -j1
+make DESTDIR=$PKG install
+install -v -dm755                          $PKG/usr/share/doc/cyrus-sasl-2.1.27/html 
+install -v -m644  saslauthd/LDAP_SASLAUTHD $PKG/usr/share/doc/cyrus-sasl-2.1.27      
+install -v -m644  doc/html/*.html          $PKG/usr/share/doc/cyrus-sasl-2.1.27/html 
+install -v -dm700 $PKG/var/lib/sasl
+
+install -v -dm755 $PKG/etc/default/	
+install -Dm644 $SRC/saslauthd $PKG/etc/default/
+install -v -dm755 $PKG/usr/lib/tmpfiles.d/
+install -Dm644 $SRC/saslauthd.conf $PKG/usr/lib/tmpfiles.d/
+install -v -dm755 $PKG/lib/systemd/system/
+install -Dm644 $SRC/saslauthd.service $PKG/lib/systemd/system/
+}

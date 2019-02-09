@@ -1,0 +1,23 @@
+description="Partitioning tool that works on Globally Unique Identifier Partition Table disks"
+url="http://www.rodsbooks.com/gdisk/index.html"
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+# Depends on: popt icu 
+
+name=gptfdisk
+version=1.0.4
+release=1
+
+
+source=(https://downloads.sourceforge.net//$name/$name-$version.tar.gz 
+	    $name-$version-convenience-1.patch)
+	
+	
+build () {
+	cd $name-$version
+	patch -Np1 -i ../$name-$version-convenience-1.patch
+	make 
+	make DESTDIR=$PKG install
+}
+

@@ -4,7 +4,7 @@
 # Contributors: Pierre B
 
 name=libcap
-version=2.25
+version=2.26
 release=2
 source=(https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-$version.tar.xz)
 

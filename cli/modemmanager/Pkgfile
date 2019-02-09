@@ -1,0 +1,24 @@
+# Depends on: libgudev gobject-introspection libmbim libqmi polkit vala gtk-doc
+
+description="Mobile broadband modem management service."
+url="http://www.freedesktop.org/wiki/Software/ModemManager/"
+packager="tnut <tnut@nutyx.org>"
+
+name=modemmanager
+version=1.8.2
+release=1
+
+source=(http://www.freedesktop.org/software/ModemManager/ModemManager-$version.tar.xz)
+build() {
+cd ModemManager-$version
+./configure --prefix=/usr                 \
+            --sysconfdir=/etc             \
+            --localstatedir=/var          \
+            --enable-more-warnings=no     \
+            --with-systemd-journal        \
+            --with-systemd-suspend-resume \
+            --disable-static
+make
+make DESTDIR=$PKG install
+}
+

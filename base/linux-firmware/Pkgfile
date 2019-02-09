@@ -3,26 +3,12 @@
 # Depends on: git
 
 name=linux-firmware
-version=20171022
+version=20190119
 release=1
 
 build() {
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git firmware
-find firmware -name '*.c' \
--or -name '*.h' \
--or -name '*.asm' \
--or -name 'Makefile' \
--or -name 'configure' \
--or -name '*.S' \
--or -name "README" \
--or -name '*.pl' \
--or -name '*.pst' \
--or -name '*.txt' | xargs rm -rv
-find firmware \( -type d -and -empty \) | xargs rm -rv
-rm -rf firmware/cis/src
-rm -rf firmware/usbdux
-rm -rf firmware/carl9170fw
-rm -rf firmware/.git
-mkdir $PKG/lib
-cp -a firmware $PKG/lib
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git 
+cd $name
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
+rm -rf $PKG/lib/firmware/{Makefile,README,configure,GPL-{2,3}}
 }

@@ -1,0 +1,23 @@
+# Depends on: dconf dbus-glib docbook-xml docbook-xsl gconf gnome-desktop json-glib libxslt mesa meson upower xmlto xorg-libxcomposite
+
+description="start up the GNOME Desktop environment"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Fanch, Tnut"
+run=()
+
+name=gnome-session
+version=3.30.1
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed 's@/bin/sh@/bin/sh -l@' -i gnome-session/gnome-session.in
+mkdir build
+cd build
+meson --prefix=/usr ..
+ninja
+DESTDIR=$PKG ninja install
+}

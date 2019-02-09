@@ -1,0 +1,18 @@
+# Description: A C wrapper library for GnuPG 
+# URL: http://www.gnupg.org/related_software/gpgme/
+# Packager: pierre at nutyx dot org
+# Depends on: gnupg libassuan libgpg-error swig
+
+name=gpgme
+version=1.12.0
+release=1
+
+source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--disable-gpg-test
+make
+make DESTDIR=$PKG install
+rm $PKG/usr/share/info/dir
+}  

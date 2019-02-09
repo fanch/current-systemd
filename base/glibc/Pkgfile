@@ -4,7 +4,7 @@
 
 kernelversion=4.19
 name=glibc
-version=2.28
+version=2.29
 release=1
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	glibc-$version-fhs-1.patch
@@ -59,6 +59,9 @@ mkdir -p $PKG/etc
 cp -v ../nscd/nscd.conf $PKG/etc/nscd.conf
 mkdir -pv $PKG/var/cache/nscd
 
+install -v -Dm644 ../nscd/nscd.tmpfiles $PKG/usr/lib/tmpfiles.d/nscd.conf
+install -v -Dm644 ../nscd/nscd.service $PKG/lib/systemd/system/nscd.service
+
 touch $PKG/etc/ld.so.conf
 
 mkdir -pv $PKG/usr/lib/locale
@@ -67,6 +70,8 @@ cp $SRC/glibc.locales.supported \
 ../localedata/SUPPORTED
 
 make install_root=$PKG localedata/install-locales
+
+
 
 cat > $PKG/etc/nsswitch.conf << "EOF"
 # Begin /etc/nsswitch.conf

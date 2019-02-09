@@ -12,12 +12,9 @@ version=1.2.5
 release=1
 
 source=(http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
-		rpcbind-$version-vulnerability_fixes-1.patch)
+		rpcbind-$version-vulnerability_fixes-1.patch services-scripts.tar.xz)
 
 build() {
-# build package
-source /etc/blfs-systemd-units
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
     cd rpcbind-$version
     
     sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
@@ -31,8 +28,7 @@ wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion
     make
     make DESTDIR=$PKG install
 
-cd $SRC
-tar xf $scripts-$scriptsversion.tar.bz2
-cd $SRC/$scripts-$scriptsversion
+# service
+cd $SRC/services-scripts
     make DESTDIR=$PKG install-rpcbind
 }

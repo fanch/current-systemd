@@ -1,0 +1,21 @@
+# Depends on: glib
+#dbus glib gobject-introspection
+
+description="GNOME keyring client library"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libgnome-keyring
+version=3.12.0
+release=3
+
+source=( http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+	cd ${name}-${version}
+	./configure --prefix=/usr \
+				--disable-static
+	make
+	make DESTDIR=$PKG install
+}

@@ -1,0 +1,22 @@
+# Depends on: glib meson ninja gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gtk3 hicolor-icon-theme dconf itstool libarchive file json-glib libnotify unrar p7zip
+
+description="Create and modify archives"
+url="http://www.gnome.org"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut, jayce, Remy"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=file-roller
+version=3.30.1
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+meson --prefix=/usr -Dpackagekit=false ..
+ninja
+DESTDIR=$PKG ninja install
+}
+

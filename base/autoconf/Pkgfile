@@ -10,6 +10,7 @@ source=(http://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.xz)
 
 build() {
 cd autoconf-$version
+sed '361 s/{/\\{/' -i bin/autoscan.in
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install

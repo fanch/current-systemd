@@ -1,0 +1,80 @@
+# Depends on: gobject-introspection libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant-dbus  newt dhcpcd python-gobject python-six gtk-doc
+
+description="Tools which simplify and make the network more directly manageable."
+url="http://projects.gnome.org/NetworkManager/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Greg"
+
+alias=(NetworkManager)
+
+_name=NetworkManager
+
+name=networkmanager
+version=1.14.4
+release=1
+
+run=(wpa-supplicant wpa-supplicant-dbus)
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+
+sed '/initrd/d' -i src/meson.build
+mkdir build 
+cd build    
+
+CXXFLAGS+="-O2 -fPIC"            \
+meson --prefix /usr              \
+      --sysconfdir /etc          \
+      --localstatedir /var       \
+      -Djson_validation=false    \
+      -Dlibaudit=no              \
+      -Dlibnm_glib=true          \
+      -Dlibpsl=false             \
+      -Dnmtui=true               \
+      -Dovs=false                \
+      -Dppp=false                \
+      -Dselinux=false            \
+      -Dqt=false                 \
+      -Dudev_dir=/lib/udev       \
+      -Dsession_tracking=systemd \
+      -Dmodem_manager=false      \
+      -Dsystemdsystemunitdir=/lib/systemd/system \
+      .. 
+ninja
+DESTDIR=$PKG ninja install
+mv -v $PKG/usr/share/doc/NetworkManager{,-1.14.4}
+
+cat >> $PKG/etc/NetworkManager/NetworkManager.conf << "EOF"
+[main]
+plugins=keyfile
+EOF
+
+cat > $PKG/etc/NetworkManager/conf.d/polkit.conf << "EOF"
+[main]
+auth-polkit=true
+EOF
+
+cat > $PKG/etc/NetworkManager/conf.d/dhcp.conf << "EOF"
+[main]
+dhcp=dhclient
+EOF
+
+cat > $PKG/etc/NetworkManager/conf.d/no-dns-update.conf << "EOF"
+[main]
+dns=none
+EOF
+
+mkdir -p $PKG/usr/share/polkit-1/rules.d
+cat > $PKG/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("netdev")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+
+}
+
+

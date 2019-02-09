@@ -1,0 +1,24 @@
+# Depends on: intltool glib gobject-introspection
+
+description="Shared GSettings schemas for the desktop"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.org>"
+contributors="Pierre B"
+
+run=( glib )
+
+name=gsettings-desktop-schemas
+version=3.28.1
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.in
+
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+

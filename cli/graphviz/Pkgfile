@@ -1,0 +1,31 @@
+# Depends on: gtk2 freetype xorg-fontconfig freeglut gdk-pixbuf libjpeg-turbo libpng pango libglade ghostscript swig guile openjdk lua python ruby tcl tk
+
+description="Graphviz is open source graph visualization software"
+url="http://www.graphviz.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+
+name=graphviz
+version=2.40.1
+release=2
+
+source=(https://graphviz.gitlab.io/pub/graphviz/stable/SOURCES/graphviz.tar.gz
+        graphviz-2.40.1-qt5-1.patch)
+
+build () {
+  cd $name-$version
+	
+  sed -e '/ruby/s/1\.9/2.4/' -i configure.ac
+  patch -p1 -i ../graphviz-2.40.1-qt5-1.patch
+  sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
+
+  autoreconf
+  ./configure --prefix=/usr --disable-php
+  make	
+  make DESTDIR=$PKG install
+	
+  install -v -m755 -d $PKG/usr/share/doc/graphviz-$version
+  ln -v -s $PKG/usr/share/graphviz/doc \
+           $PKG/usr/share/doc/graphviz-$version
+}

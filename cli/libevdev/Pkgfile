@@ -1,0 +1,20 @@
+# Depends on: python
+
+description="The Libevdev package contains common functions for Xorg input drivers."
+url="http://www.freedesktop.org/wiki/Software/libevdev/"
+packager="tnut <tnut@nutyx.org>"
+
+name=libevdev
+version=1.6.0
+release=1
+
+source=(http://www.freedesktop.org/software/libevdev/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+			--disable-static
+make
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
+}

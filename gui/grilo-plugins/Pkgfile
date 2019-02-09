@@ -1,0 +1,21 @@
+# Depends on: meson glib grilo
+
+description="A collection of plugins for the Grilo framework."
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="fanch at nutyx dot org, tnut at nutyx dot org"
+
+name=grilo-plugins
+version=0.3.8
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr 
+ninja
+DESTDIR=$PKG ninja install
+}
+

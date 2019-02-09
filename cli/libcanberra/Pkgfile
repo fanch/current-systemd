@@ -1,0 +1,24 @@
+# Depends on: alsa-lib gtk2 libvorbis  gconf gstreamer gtk3 pulseaudio
+
+description="A small and lightweight implementation of the XDG Sound Theme Specification"
+url="http://0pointer.de/lennart/projects/libcanberra"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libcanberra
+version=0.30
+release=3
+
+source=(http://0pointer.de/lennart/projects/libcanberra/libcanberra-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--enable-alsa \
+--enable-gstreamer \
+--enable-pulse \
+--disable-oss
+make
+make -j1 DESTDIR=$PKG install
+}

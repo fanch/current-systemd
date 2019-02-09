@@ -1,0 +1,20 @@
+# Description: Encoder MPEG-4 de AudioCoding.com
+# URL: http://www.audiocoding.com
+# Packager: tnut at nutyx dot org
+# Depends on: libmp4v2
+
+name=faac
+version=1.29.9.2 
+release=1
+
+source=( https://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+			--disable-static \
+			--enable-drm
+make
+make DESTDIR=$PKG install
+}

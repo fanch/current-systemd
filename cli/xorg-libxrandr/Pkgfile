@@ -1,0 +1,20 @@
+# Depends on: xorgproto xorg-libx11 xorg-libxext xorg-libxrender
+
+description="Library libXrandr, resize and rotate extension client library"
+url="http://xorg.freedesktop.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-libxrandr
+alias=(libXrandr)
+version=1.5.1
+release=2
+_name=libXrandr
+
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-static
+make DESTDIR=$PKG install
+}

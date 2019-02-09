@@ -1,0 +1,24 @@
+# Depends on: dbus-glib libusb intltool polkit gobject-introspection libgudev pm-utils
+
+description="To enumerating power devices, listening to device events, querying history and statistics"
+url="http://upower.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B, tnut"
+
+name=upower
+version=0.99.7
+release=1
+
+source=(http://upower.freedesktop.org/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--enable-deprecated \
+--localstatedir=/var \
+--disable-static
+
+make
+make DESTDIR=$PKG install
+}
