@@ -100,6 +100,8 @@ First we get the current git of nutyx localy (step1) as normal user. As we want 
 #### 10. If you want to re build completly 'base' collection from the sources 
 
     # bash scripts/base -a
+    # bash scripts/cli -a
+    # bash scripts/gui -a
 
 
 Have fun :)
