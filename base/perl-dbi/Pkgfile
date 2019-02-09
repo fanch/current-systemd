@@ -8,7 +8,7 @@ contributors="Pierre B"
 run=( perl )
 name=perl-dbi
 version=1.641
-
+release=1
 source=(http://www.cpan.org/authors/id/T/TI/TIMB/DBI-$version.tar.gz)
 
 build() {

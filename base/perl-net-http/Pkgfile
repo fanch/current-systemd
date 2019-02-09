@@ -9,7 +9,7 @@ run=( perl )
 
 name=perl-net-http
 version=6.18
-
+release=1
 source=(http://cpan.metacpan.org/authors/id/O/OA/OALDERS/Net-HTTP-$version.tar.gz)
 
 build() {

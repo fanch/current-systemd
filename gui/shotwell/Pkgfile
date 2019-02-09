@@ -1,0 +1,27 @@
+# Depends on: gtk3 libgdata libgee libgexiv2 libgphoto2 libraw meson vala webkitgtk
+
+description="A digital photo organizer designed for the GNOME desktop environment"
+url="http://www.gnome.org/"
+packager="fanch <fanch@nutyx.com>"
+contributors="Tnut"
+run=(intltool vala) 
+
+name=shotwell
+version=0.30.1
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson 	 --prefix=/usr \
+  --libdir=/usr/lib \
+  --libexecdir=/usr/lib \
+  --bindir=/usr/bin \
+  --sbindir=/usr/bin \
+  --includedir=/usr/include
+ninja
+DESTDIR=$PKG ninja install
+}
+

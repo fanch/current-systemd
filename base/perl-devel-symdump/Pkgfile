@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 run=( perl )
 name=perl-devel-symdump
 version=2.18
-
+release=1
 source=(http://www.cpan.org/authors/id/A/AN/ANDK/Devel-Symdump-$version.tar.gz)
 
 build() {

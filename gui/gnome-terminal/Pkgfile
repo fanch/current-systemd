@@ -1,4 +1,4 @@
-# Depends on: appstream-glib gnome-shell vala yelp-tools
+# Depends on: appstream-glib gnome-shell vala yelp-tools pcre2 vte3
 #gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache dconf gconf gtk3 gnome-doc-utils gsettings-desktop-schemas vte3 nautilus 
 
 description="The GNOME Terminal Emulator"
