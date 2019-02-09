@@ -105,5 +105,5 @@ First we get the current git of nutyx localy (step1) as normal user. As we want 
 
 
 Have fun :)
-# current
+
 # current-systemd
