@@ -1,8 +1,8 @@
 version=3.7.2
-source=( https://www.python.org/ftp/python/$version/python-$version.tar.gz)
+source=( https://www.python.org/ftp/python/$version/Python-$version.tar.xz)
 build()
 {
-cd  pkg-config-$version
+cd  Python-$version
 
 ./configure --prefix=/tools --with-ensurepip=no
 make
