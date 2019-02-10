@@ -1,5 +1,5 @@
 version=2.2.2
-source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
+source=(cards-$version.tar.gz)
 build()
 {
 cd cards-$version
