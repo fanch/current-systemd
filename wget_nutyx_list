@@ -112,7 +112,7 @@ http://www.kernel.org/pub/linux/kernel/v4.x/linux-4.14.tar.xz
 http://www.kernel.org/pub/linux/kernel/v4.x/patch-4.14.79.xz
 http://download.virtualbox.org/virtualbox/5.2.18/VirtualBox-5.2.18-124319-Linux_amd64.run
 http://people.redhat.com/~dhowells/keyutils/keyutils-1.5.11.tar.bz2
-http://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz
+http://www.libarchive.org/downloads/libarchive-3.3.3.tar.gz
 http://www.thrysoee.dk/editline/libedit-20170329-3.1.tar.gz
 https://github.com/thom311/libnl/releases/download/libnl$(echo 3.4.0|sed 's/\./_/g')/libnl-3.4.0.tar.gz
 http://downloads.sourceforge.net/libpng/libpng-1.6.35.tar.xz 
