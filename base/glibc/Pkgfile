@@ -25,33 +25,32 @@ cd ../glibc-$version
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 
 case $(uname -m) in
-   i?86)
-     mkdir $PKG/lib
-     GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/8.2.0/include
-     ln -s ld-linux.so.2 $PKG/lib/ld-lsb.so.3
-   ;;
-   x86_64) 
-     mkdir $PKG/lib64
-     GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include
-     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
-     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
-   ;;
+    i?86)    GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/8.2.0/include
+            ln -sfv ld-linux.so.2 /lib/ld-lsb.so.3
+    ;;
+    x86_64) GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include
+            ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64
+            ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64/ld-lsb-x86-64.so.3
+    ;;
 esac
+
+rm -f /usr/include/limits.h
 
 mkdir -v build
 cd       build
 
-CC="gcc -isystem $GCC_INCDIR -isystem /usr/include"       \
-../configure --prefix=/usr                                \
---disable-werror                \
---enable-kernel=3.2             \
---enable-stack-protector=strong \
-libc_cv_slibdir=/lib
+CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
+../configure --prefix=/usr                          \
+             --disable-werror                       \
+             --enable-kernel=3.2                    \
+             --enable-stack-protector=strong        \
+             libc_cv_slibdir=/lib
+unset GCC_INCDIR
 
 make || make -j1
 
-# make -k check 2>&1 | tee glibc-check-log
-# grep Error glibc-check-log
+touch $PKG/etc/ld.so.conf
+sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
 
 make install_root=$PKG install
 
@@ -62,7 +61,7 @@ mkdir -pv $PKG/var/cache/nscd
 install -v -Dm644 ../nscd/nscd.tmpfiles $PKG/usr/lib/tmpfiles.d/nscd.conf
 install -v -Dm644 ../nscd/nscd.service $PKG/lib/systemd/system/nscd.service
 
-touch $PKG/etc/ld.so.conf
+
 
 mkdir -pv $PKG/usr/lib/locale
 
