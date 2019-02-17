@@ -1,4 +1,4 @@
-# Pescription: Pluggable Authentication Modules to choose how applications authenticate users.
+# Description: Pluggable Authentication Modules to choose how applications authenticate users.
 # URL: http://www.kernel.org/pub/libs/pam
 # Packager: tnut <tnut@nutyx.org>
 
