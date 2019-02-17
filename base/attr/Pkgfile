@@ -24,9 +24,10 @@ INSTALL_GROUP=root \
 make
 make DESTDIR=$PKG install
 
-install -d $PKG/lib
-mv $PKG/usr/lib/libattr.so.* $PKG/lib
-ln -sf ../../lib/$(readlink $PKG/lib/libattr.so) $PKG/usr/lib/libattr.so
+chmod -v 755 $PKG/usr/lib/libattr.so
+mkdir $PKG/lib
+mv -v $PKG/usr/lib/libattr.so.* $PKG/lib
+ln -sfv ../../lib/libattr.so.1 $PKG/usr/lib/libattr.so
 }
 devel () {
 cd $PKG
