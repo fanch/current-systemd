@@ -44,8 +44,6 @@ openssl
 python
 ninja
 meson
-procps-ng
-e2fsprogs
 coreutils
 check
 diffutils
@@ -62,10 +60,12 @@ patch
 man-db
 tar
 texinfo
-util-linux
-vim
 systemd
 dbus
+procps-ng
+util-linux
+e2fsprogs
+vim
 nasm
 curl
 cpio

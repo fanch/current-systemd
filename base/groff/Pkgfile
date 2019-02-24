@@ -7,7 +7,7 @@
 name=groff
 version=1.22.4
 release=1
-source=(http://ftp.gnu.org/gnu/groff/groff-$version.tar.gz site.tmac)
+source=(http://ftp.gnu.org/gnu/groff/groff-$version.tar.gz)
 
 build() {
 cd groff-$version
@@ -19,10 +19,6 @@ make DESTDIR=$PKG install
 
 ln -sv eqn $PKG/usr/bin/geqn
 ln -sv tbl $PKG/usr/bin/gtbl
-ln -s soelim $PKG/usr/bin/zsoelim
-
-cat $SRC/site.tmac >> $PKG/usr/share/groff/site-tmac/man.local
-cat $SRC/site.tmac >> $PKG/usr/share/groff/site-tmac/mdoc.local
 
 rm -rf $PKG/usr/share/info/dir
 }
