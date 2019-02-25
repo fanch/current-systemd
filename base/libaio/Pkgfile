@@ -5,7 +5,7 @@ packager="rems <rems@nutyx.org>"
 
 name=libaio
 version=0.3.111
-
+release=1
 source=(http://ftp.de.debian.org/debian/pool/main/liba/$name/${name}_${version}.orig.tar.gz)
 
 build() {

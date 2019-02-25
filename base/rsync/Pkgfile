@@ -11,16 +11,26 @@ source=(http://rsync.samba.org/ftp/$name/$name-$version.tar.gz
 build() { 
 cd $name-$version
 ./configure --prefix=/usr \
--mandir=/usr/share/man \
---without-included-zlib \
---infodir=/usr/share/info
+--without-included-zlib 
 make
 make DESTDIR=$PKG install
 
-# drivers
-mkdir -p $PKG/var/lib/pkg/drivers
-install -m 755 $SRC/rsync.driver \
-$PKG/var/lib/pkg/drivers/rsync
+cat > $PKG/etc/rsyncd.conf << "EOF"
+# This is a basic rsync configuration file
+# It exports a single module without user authentication.
+
+motd file = /home/rsync/welcome.msg
+use chroot = yes
+
+[localhost]
+    path = /home/rsync
+    comment = Default rsync module
+    read only = yes
+    list = yes
+    uid = rsyncd
+    gid = rsyncd
+
+EOF
 
 # service
 cd $SRC/services-scripts

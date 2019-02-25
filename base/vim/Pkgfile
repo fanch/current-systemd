@@ -10,11 +10,10 @@ source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
 build()
 {
 cd vim81
-echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+echo '#define SYS_VIMRC_FILE  "/etc/vimrc"' >>  src/feature.h 
 
-./configure --prefix=/usr --enable-multibyte \
-        --enable-gui=no --with-x=no \
-        --enable-gpm --with-compiledby='YaoLinuX'
+
+./configure --prefix=/usr
 
 make
 mkdir -p $PKG/usr/share/locale

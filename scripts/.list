@@ -87,9 +87,9 @@ ca-certificates
 e3
 git
 mdadm
-btrfs-progs
 xfsprogs
 reiserfsprogs
+btrfs-progs
 jfsutils
 libtirpc
 rpcbind

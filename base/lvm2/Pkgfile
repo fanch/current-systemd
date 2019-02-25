@@ -10,16 +10,16 @@ source=(ftp://sources.redhat.com/pub/lvm2/LVM2.$version.tgz)
 
 build() {
 cd LVM2.$version
-
-./configure \
---prefix=/usr \
---exec-prefix= \
---with-confdir=/etc \
---mandir=/usr/share/man \
---enable-applib \
---enable-cmdlib \
---enable-pkgconfig \
---enable-udev_sync
+SAVEPATH=$PATH                  
+PATH=$PATH:/sbin:/usr/sbin
+./configure --prefix=/usr       \
+            --exec-prefix=      \
+            --with-confdir=/etc \
+            --enable-cmdlib     \
+            --enable-pkgconfig  \
+            --enable-udev_sync
 make
+PATH=$SAVEPATH                  
+unset SAVEPATH
 make DESTDIR=$PKG install
 }
