@@ -14,7 +14,7 @@ echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 
 ./configure --prefix=/usr --enable-multibyte \
         --enable-gui=no --with-x=no \
-        --disable-gpm
+        --enable-gpm --with-compiledby='YaoLinuX'
 
 make
 mkdir -p $PKG/usr/share/locale
