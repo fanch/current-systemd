@@ -9,7 +9,7 @@ name=systemd
 version=240
 release=4
 
-source=(https://github.com/systemd/systemd/archive/$name-$version.tar.gz
+source=( https://github.com/systemd/systemd/archive/v240/$name-$version.tar.gz
         systemd-240-security_fixes-1.patch)
 
 build () {
