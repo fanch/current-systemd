@@ -1,7 +1,0 @@
-infodir=/usr/share/info
-filelist=(groff.info{,-1,-2,-3})
-
-[ -x /usr/bin/install-info ] || return 0
-for file in ${filelist[@]}; do
-install-info $infodir/$file $infodir/dir 2> /dev/null
-done
