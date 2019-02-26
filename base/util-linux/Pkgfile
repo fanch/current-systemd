@@ -33,11 +33,10 @@ mkdir -pv $PKG/var/lib/hwclock
 make
 make DESTDIR=$PKG  install
 
-mv $PKG/usr/bin/* $PKG/bin/
-rm -r $PKG/usr/bin
-
-mv $PKG/usr/sbin/* $PKG/sbin/
-rm -r $PKG/usr/sbin
+for file in /usr/lib/lib{blkid,mount,uuid}*
+do
+rm $file
+done
 }
 devel()
 {
