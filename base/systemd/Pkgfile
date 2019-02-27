@@ -7,7 +7,7 @@ maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
 version=240
-release=4
+release=5
 
 source=( https://github.com/systemd/systemd/archive/v240/$name-$version.tar.gz
         systemd-240-security_fixes-1.patch)
@@ -15,8 +15,8 @@ source=( https://github.com/systemd/systemd/archive/v240/$name-$version.tar.gz
 build () {
 cd $name-$version
 patch -Np1 -i ../systemd-240-security_fixes-1.patch
-[ -d /tools ] && ln -sf /tools/bin/true /usr/bin/xsltproc
-# sed '165,$ d' -i src/resolve/meson.build
+ln -sf /tools/bin/true /usr/bin/xsltproc
+sed '177,$ d' -i src/resolve/meson.build
 sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 
 for file in /tools/lib/lib{blkid,mount,uuid}*; do
@@ -54,16 +54,6 @@ LANG=en_US.UTF-8 ninja
 DESTDIR=$PKG LANG="en_US.UTF-8" ninja install
 rm -rfv $PKG/usr/lib/rpm
 rm -f /usr/bin/xsltproc
-
-# Disable service systemd-networkd
-unlink $PKG/etc/systemd/system/dbus-org.freedesktop.network1.service
-unlink $PKG/etc/systemd/system/multi-user.target.wants/systemd-networkd.service
-unlink $PKG/etc/systemd/system/sockets.target.wants/systemd-networkd.socket
-unlink $PKG/etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-
-# Disable service systemd-resolved
-unlink $PKG/etc/systemd/system/dbus-org.freedesktop.resolve1.service
-unlink $PKG/etc/systemd/system/multi-user.target.wants/systemd-resolved.service
 
 cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
 #!/bin/bash
