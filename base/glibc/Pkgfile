@@ -59,7 +59,6 @@ cp -v ../nscd/nscd.conf $PKG/etc/nscd.conf
 mkdir -pv $PKG/var/cache/nscd
 
 touch $PKG/etc/ld.so.conf
-sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
 
 install -v -Dm644 ../nscd/nscd.tmpfiles $PKG/usr/lib/tmpfiles.d/nscd.conf
 install -v -Dm644 ../nscd/nscd.service $PKG/lib/systemd/system/nscd.service
