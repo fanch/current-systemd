@@ -48,7 +48,6 @@ CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
              --enable-kernel=3.2                    \
              --enable-stack-protector=strong        \
              libc_cv_slibdir=/lib
-unset GCC_INCDIR
 
 make || make -j1
 
