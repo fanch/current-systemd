@@ -161,7 +161,7 @@ http://www.cacert.org/certs/class3.crt
 http://www.netfilter.org/projects/iptables/files/iptables-1.8.0.tar.bz2
 https://github.com/thom311/libnl/releases/download/libnl3_4_0/libnl-3.4.0.tar.gz
 https://github.com/thom311/libnl/releases/download/libnl3_4_0/libnl-doc-3.4.0.tar.gz
-https://archive.apache.org/dist/httpd/httpd-2.4.34.tar.bz2
+https://archive.apache.org/dist/httpd/httpd-2.4.37.tar.bz2
 http://www.linuxfromscratch.org/patches/blfs/svn/httpd-2.4.34-blfs_layout-1.patch
 https://archive.apache.org/dist/apr/apr-util-1.6.1.tar.bz2
 https://archive.apache.org/dist/apr/apr-1.6.5.tar.bz2
