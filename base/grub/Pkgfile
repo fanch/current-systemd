@@ -25,4 +25,6 @@ build() {
         install -d $PKG/boot/grub
 	install -Dm644 ../grub.cfg \
 	$PKG/boot/grub/grub.cfg.exemple
+
+rm $PKG/usr/share/info/dir.gz
 }
