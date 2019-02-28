@@ -166,8 +166,8 @@ http://www.linuxfromscratch.org/patches/blfs/svn/httpd-2.4.34-blfs_layout-1.patc
 https://archive.apache.org/dist/apr/apr-util-1.6.1.tar.bz2
 https://archive.apache.org/dist/apr/apr-1.6.5.tar.bz2
 https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.bz2
-https://sqlite.org/2018/sqlite-autoconf-3250200.tar.gz
-https://sqlite.org/2018/sqlite-doc-3250200.zip
+https://sqlite.org/2018/sqlite-autoconf-3260000.tar.gz
+https://sqlite.org/2018/sqlite-doc-3260000.zip
 ftp://xmlsoft.org/libxml2/libxml2-2.9.9.tar.gz
 http://isl.gforge.inria.fr/isl-0.20.tar.xz
 http://jfs.sourceforge.net/project/pub/jfsutils-1.1.15.tar.gz
