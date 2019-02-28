@@ -18,4 +18,5 @@ build() {
 
     find $PKG -name .packlist -or \
          -name '*.bs' | xargs rm
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

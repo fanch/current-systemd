@@ -22,4 +22,5 @@ make DESTDIR=$PKG install
 find $PKG \
         -name '*.bs' -or \
         -name .packlist | xargs rm
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

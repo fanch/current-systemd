@@ -23,5 +23,8 @@ build() {
         find $PKG -name "$i" -exec rm -rf {} \;
     done
     # Part of perl
-    rm -r $PKG/usr/share/man
+    rm -r $PKG/usr/share/man	
+	rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
+
 }
+

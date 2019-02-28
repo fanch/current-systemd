@@ -17,4 +17,5 @@ PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR=$PKG install
 find $PKG -name .packlist -delete
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

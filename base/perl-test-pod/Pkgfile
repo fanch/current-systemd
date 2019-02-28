@@ -20,4 +20,5 @@ build() {
 
     # Remove .packlist if present in the package
     find $PKG -name .packlist -delete
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

@@ -86,6 +86,7 @@ http://www.linuxfromscratch.org/patches/lfs/development/glibc-2.28-fhs-1.patch
 http://www.linuxfromscratch.org/patches/lfs/development/kbd-2.0.4-backspace-1.patch
 http://www.linuxfromscratch.org/patches/lfs/development/sysvinit-2.93-consolidated-1.patch
 http://www.linuxfromscratch.org/patches/lfs/development/systemd-240-security_fixes-1.patch
+http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz
 http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2019.01.06.tar.xz
 http://downloads.tuxfamily.org/nutyx/files/nutyx-9.0.tar.xz
 http://www.kernel.org/pub/linux/utils/net/bridge-utils/bridge-utils-1.6.tar.xz
@@ -113,7 +114,7 @@ http://www.kernel.org/pub/linux/kernel/v4.x/patch-4.19.19.xz
 http://www.kernel.org/pub/linux/kernel/v4.x/linux-4.14.tar.xz
 http://www.kernel.org/pub/linux/kernel/v4.x/patch-4.14.79.xz
 http://download.virtualbox.org/virtualbox/5.2.18/VirtualBox-5.2.18-124319-Linux_amd64.run
-http://people.redhat.com/~dhowells/keyutils/keyutils-1.5.11.tar.bz2
+http://people.redhat.com/~dhowells/keyutils/keyutils-1.6.tar.bz2
 http://www.libarchive.org/downloads/libarchive-3.3.3.tar.gz
 http://www.thrysoee.dk/editline/libedit-20180525-3.1.tar.gz
 https://github.com/thom311/libnl/releases/download/libnl$(echo 3.4.0|sed 's/\./_/g')/libnl-3.4.0.tar.gz
@@ -167,7 +168,7 @@ https://archive.apache.org/dist/apr/apr-1.6.5.tar.bz2
 https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.bz2
 https://sqlite.org/2018/sqlite-autoconf-3250200.tar.gz
 https://sqlite.org/2018/sqlite-doc-3250200.zip
-ftp://xmlsoft.org/libxml2/libxml2-2.9.8.tar.gz
+ftp://xmlsoft.org/libxml2/libxml2-2.9.9.tar.gz
 http://isl.gforge.inria.fr/isl-0.20.tar.xz
 http://jfs.sourceforge.net/project/pub/jfsutils-1.1.15.tar.gz
 http://ftp.de.debian.org/debian/pool/main/liba/libaio/libaio_0.3.111.orig.tar.gz
