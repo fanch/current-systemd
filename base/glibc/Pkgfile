@@ -4,7 +4,7 @@
 
 kernelversion=4.19
 name=glibc
-version=2.29
+version=2.28
 release=1
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	glibc-$version-fhs-1.patch
