@@ -22,5 +22,4 @@ build() {
     for i in perllocal.pod .packlist; do
         find $PKG -name "$i" -exec rm -rf {} \;
     done
-rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

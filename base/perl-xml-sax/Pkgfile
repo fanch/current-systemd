@@ -14,10 +14,10 @@ source=(http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-$version.tar.gz)
 
 build() {
     cd XML-SAX-$version
-    PERL_MM_USE_DEFAULT=1 perl Makefile.PL
+    PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
     make
     make test
-    PERLLIB=blib/lib make install INSTALLDIRS=vendor DESTDIR=$PKG
+    PERLLIB=blib/lib make install  DESTDIR=$PKG
 
     # Remove .packlist if present in the package
     find $PKG -name .packlist -delete

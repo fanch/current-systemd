@@ -25,7 +25,6 @@ PERL_AUTOINSTALL=--skipdeps \
 PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$PKG'" \
 PERL_MB_OPT="--installdirs vendor --destdir '$PKG'" \
 MODULEBUILDRC=/dev/null
-rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }
 
 
@@ -41,4 +40,5 @@ prepareEnvironment
 make install
 find $PKG -name .packlist -delete
 ln -sv /usr/bin/vendor_perl/sgmlspl.pl $PKG/usr/bin/sgmlspl
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }

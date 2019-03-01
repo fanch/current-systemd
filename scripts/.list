@@ -114,7 +114,6 @@ perl-error
 perl-extutils-depends
 perl-extutils-makemaker
 perl-extutils-pkgconfig
-perl-file-basedir
 perl-file-listing
 perl-file-next
 perl-html-parser
@@ -136,6 +135,7 @@ perl-locale-gettext
 perl-lwp-mediatypes
 perl-lwp-protocol-https
 perl-module-build
+perl-file-basedir
 perl-mozilla-ca
 perl-netaddr-ip
 perl-net-dns
@@ -156,6 +156,7 @@ perl-try-tiny
 perl-uri
 perl-www-robotrules
 perl-xml-namespacesupport
+perl-xml-base
 perl-xml-sax
 perl-xml-simple
 perl-yaml
