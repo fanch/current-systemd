@@ -26,22 +26,19 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 --disable-libuuid \
 --disable-uuidd \
 --disable-fsck
-
 make || make -j1
 make DESTDIR=$PKG install install-libs || make -j1 DESTDIR=$PKG install install-libs
 
 chmod -v u+w $PKG/usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
 
 gunzip -v $PKG/usr/share/info/libext2fs.info.gz
-install-info --dir-file=$PKG/usr/share/info/dir $PKG/usr/share/info/libext2fs.info
+
 makeinfo -o doc/com_err.info ../lib/et/com_err.texinfo
 
 install -v -m644 doc/com_err.info $PKG/usr/share/info
-install-info --dir-file=$PKG/usr/share/info/dir $PKG/usr/share/info/com_err.info
-
-rm -r $PKG/usr/share/info/dir.gz
 }
-devel() {
+devel()
+{
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -49,4 +46,3 @@ usr/include usr/lib/pkgconfig usr/share/et usr/share/ss
 
 rm -r usr/{include,lib/pkgconfig,share/et,share/ss}
 }
-
