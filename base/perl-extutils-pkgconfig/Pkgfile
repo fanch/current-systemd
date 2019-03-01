@@ -19,6 +19,6 @@ build() {
 	make DESTDIR=$PKG install
 	find $PKG -name .packlist -delete
 	find $PKG -empty -delete
-rm -r $PKG/usr/lib/share/perl5/base/perllocal.po
+rm -r $PKG/usr/lib/share/perl5/base/perllocal.pod
 }
   
