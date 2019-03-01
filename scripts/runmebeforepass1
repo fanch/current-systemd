@@ -100,7 +100,7 @@ fi
 echo "link /home/lfs/config: OK"
 
 for i in  wget-list md5sums
-do wget http://www.linuxfromscratch.org/lfs/view/development/$i \
+do wget http://www.linuxfromscratch.org/lfs/view/systemd/$i \
    -O $LFS/sources/$i
 done
 for i in `cat $LFS/sources/wget-list`
